@@ -1,24 +1,24 @@
 package com.example.news.enity;
 
 public class News {
-    private int id;
+    private String id;
     private String name;
     private String link;
 
     public News() {
     }
 
-    public News(String name, String link, int id) {
+    public News(String name, String link, String id) {
         this.name = name;
         this.link = link;
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

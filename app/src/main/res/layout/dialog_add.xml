@@ -36,7 +36,6 @@
         app:boxStrokeColor="@color/black"
         app:hintTextColor="@color/black"
         tools:boxBackgroundColor="@color/black">
-
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/ed_link"
             android:layout_width="match_parent"

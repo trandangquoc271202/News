@@ -44,4 +44,28 @@ public class DatabaseFirebase {
                     }
                 });
     }
+
+    public void addRss(String name, String link) {
+        Map<String, Object> rss = new HashMap<>();
+        rss.put("name", name);
+        rss.put("link", link);
+        db.collection("rss").add(rss);
+    }
+
+    public void deleteRss(String document) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("rss").document(document);
+        docRef.delete();
+    }
+
+    public void updateRss(String document, String name, String link) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("rss").document(document);
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("name", name);
+        newData.put("link", link);
+
+        docRef.set(newData);
+    }
+
 }
