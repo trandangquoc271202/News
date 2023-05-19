@@ -23,6 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity
+            android:name=".ManageRss"
+            android:exported="true"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge">
+            </activity>
+        <activity
             android:name=".WebViewActivity"
             android:exported="true" />
         <activity

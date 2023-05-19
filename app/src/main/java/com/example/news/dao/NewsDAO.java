@@ -47,7 +47,7 @@ public class NewsDAO {
         }
     }
 
-    public boolean delete(int id){
+    public boolean delete(String id){
         String strID = String.valueOf(id);
         if (db.delete(TABLE_NAME, "id = ?", new String[]{strID}) >= 0){
             return true;
@@ -60,10 +60,9 @@ public class NewsDAO {
     }
     public List<News> getRSS(){
         List<News> list = new ArrayList<News>();
-        News news = new News("kinh te", "https://vtv.vn/kinh-te/tai-chinh.rss", 1);
-        News new2 = new News("the gioi", "https://vtv.vn/the-gioi.rss", 2);
+        News news = new News("kinh te", "https://vtv.vn/kinh-te/tai-chinh.rss", "1");
+        News new2 = new News("the gioi", "https://vtv.vn/the-gioi.rss", "2");
         list.add(news);
-        list.add(new2);
         return list;
     }
     public News getNews(int id){
@@ -81,7 +80,7 @@ public class NewsDAO {
         Cursor cursor = db.rawQuery(sql, selectionArgs);
         while (cursor.moveToNext()){
             News obj = new News();
-            obj.setId(cursor.getInt(cursor.getColumnIndex("id")));
+            obj.setId(cursor.getString(cursor.getColumnIndex("id")));
             obj.setName(cursor.getString(cursor.getColumnIndex("name")));
             obj.setLink(cursor.getString(cursor.getColumnIndex("link")));
             list.add(obj);

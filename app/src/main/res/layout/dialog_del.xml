@@ -10,13 +10,20 @@
 
     <Button
         android:id="@+id/btn_del"
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:background="@drawable/btn_del"
         android:text="xóa"
         android:textColor="@color/white" />
-
+    <Button
+        android:id="@+id/btn_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/btn_update"
+        android:text="Cập nhật"
+        android:textColor="@color/white" />
     <Button
         android:id="@+id/btn_cancel"
         android:layout_width="wrap_content"
