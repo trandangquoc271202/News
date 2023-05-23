@@ -47,8 +47,8 @@ public class NewsActivity extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                openLink(i);
                 db.addHistory("212323",ItemLists.get(i));
+                openLink(i);
             }
         });
     }
