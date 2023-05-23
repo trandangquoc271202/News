@@ -31,11 +31,6 @@
             android:name=".WebViewActivity"
             android:exported="true" />
         <activity
-            android:name="com.example.news.HistoryActivity"
-            android:label="History Activity" >
-        </activity>
-
-        <activity
             android:name=".NewsActivity"
             android:exported="true" />
         <activity
@@ -48,6 +43,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".HistoryActivity"
+            android:exported="true"/>
+        <activity android:name=".ManageListFavorite"
+            android:exported="true"/>
     </application>
 
 </manifest>

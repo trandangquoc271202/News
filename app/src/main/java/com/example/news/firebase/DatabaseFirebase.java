@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -101,5 +102,28 @@ public class DatabaseFirebase {
 
         docRef.set(newData);
     }
+public void saveAccount(String username, String password, String email){
+    Map<String, Object> save = new HashMap<>();
+    save.put("username", username);
+    save.put("password", password);
+    save.put("email", email);
+    save.put("role", "user");
+    save.put("typeAccount","0");
+    db.collection("users").add(save);
+}
+    public void addFavorite(Item item, String id) {
+        Map<String, Object> favorite = new HashMap<>();
+        favorite.put("idUser", id);
+        favorite.put("title", item.getTitle());
+        favorite.put("link", item.getLink());
+        favorite.put("date", item.getDate());
+        favorite.put("linkImg", item.getLinkImg());
+        db.collection("favorite").add(favorite);
+    }
 
+    public void deleteFavorite(String document) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("favorite").document(document);
+        docRef.delete();
+    }
 }

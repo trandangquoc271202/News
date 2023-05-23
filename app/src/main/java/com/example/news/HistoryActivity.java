@@ -94,8 +94,7 @@ public class HistoryActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             ArrayList<News> list = new ArrayList<News>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                username = new User(document.getData().get("username").toString());
-                                item = new Item(document.getData().get("title").toString(), document.getData().get("link").toString(), document.getData().get("date").toString(), document.getData().get("linkImg").toString(), document.getId());
+                                item = new Item(document.getId(),document.getData().get("title").toString(), document.getData().get("link").toString(), document.getData().get("date").toString(), document.getData().get("linkImg").toString());
                                 ItemLists.add(item);
                                 // Sau khi tải danh sách mới, cập nhật lại ListView
                                 UpdateLV(ItemLists);
@@ -108,15 +107,6 @@ public class HistoryActivity extends AppCompatActivity {
                 });
     }
 
-    public boolean checkInternet() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if (wifi.isConnected() || mobile.isConnected()) {
-            return true;
-        }
-        return false;
-    }
 
     public void openLink(int i) {
 
