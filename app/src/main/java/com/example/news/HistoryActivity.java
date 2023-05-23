@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,6 +29,8 @@ import com.example.news.enity.User;
 import com.example.news.firebase.DatabaseFirebase;
 import com.example.news.xmlpullparser.XmlPullParserHandler;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -92,6 +95,9 @@ public class HistoryActivity extends AppCompatActivity {
                                 username = new User(document.getData().get("username").toString());
                                 item = new Item(document.getData().get("title").toString(), document.getData().get("link").toString(), document.getData().get("date").toString(), document.getData().get("linkImg").toString());
                                 ItemLists.add(item);
+                                // Sau khi tải danh sách mới, cập nhật lại ListView
+                                ((BaseAdapter) lv.getAdapter()).notifyDataSetChanged();
+
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
@@ -149,6 +155,29 @@ public class HistoryActivity extends AppCompatActivity {
             this.list.remove(i);
         }
 
+        public void deleteItem(int position) {
+            Item item = list.get(position);
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("history")
+                    .document(item.getId())
+                    .delete()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            list.remove(position);
+                            notifyDataSetChanged();
+                            loadAllItems();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            // Xử lý lỗi khi xóa không thành công (nếu cần)
+                            Log.e(TAG, "Error deleting document", e);
+                        }
+                    });
+        }
+
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
             View viewString;
@@ -171,7 +200,14 @@ public class HistoryActivity extends AppCompatActivity {
             tv_title.setText(currentItem.getTitle());
             tv_link.setText(currentItem.getLink());
             tv_date.setText(currentItem.getDate());
-
+            //
+            Button btnDelete = viewString.findViewById(R.id.btn_delete);
+            btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    deleteItem(i);
+                }
+            });
             return viewString;
         }
     }

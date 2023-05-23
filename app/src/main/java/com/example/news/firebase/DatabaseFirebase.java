@@ -63,6 +63,7 @@ public class DatabaseFirebase {
         db.collection("History").add(rss);
     }
 
+
     public void deleteRss(String document) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("rss").document(document);
