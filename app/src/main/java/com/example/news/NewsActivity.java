@@ -32,6 +32,7 @@ public class NewsActivity extends AppCompatActivity {
     ListView lv;
     public List<Item> ItemLists = new ArrayList<>();
     String link;
+
     Dialog dialog;
     DatabaseFirebase db;
     @Override
@@ -43,13 +44,12 @@ public class NewsActivity extends AppCompatActivity {
         link = intent.getStringExtra("link");
         db = new DatabaseFirebase();
         Toast.makeText(getApplicationContext(), ""+link, Toast.LENGTH_SHORT).show();
-        if (checkInternet()){
-            downloadNew();
-        }
+        downloadNew();
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                db.addHistory("212323",ItemLists.get(i));
                 openLink(i);
             }
         });
@@ -67,36 +67,14 @@ public class NewsActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkExistFavorite(item.getId())){
-                    Toast.makeText(getApplicationContext(), "Đã tồn tại trong danh sách yêu thích!", Toast.LENGTH_SHORT).show();
-                } else {
                     db.addFavorite(item, "123123");
                     dialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Thêm vào danh sách yêu thích thành công!", Toast.LENGTH_SHORT).show();
-                }
             }
         });
         dialog.show();
     }
 
-    public boolean checkExistFavorite(String id) {
-        for (int i = 0; i < ItemLists.size(); i++) {
-            if (ItemLists.get(i).getId().equals(id)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean checkInternet(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if (wifi.isConnected() || mobile.isConnected()){
-            return true;
-        }
-        return false;
-    }
     public void openLink(int i){
         Toast.makeText(getApplicationContext(), "click", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(NewsActivity.this, WebViewActivity.class);

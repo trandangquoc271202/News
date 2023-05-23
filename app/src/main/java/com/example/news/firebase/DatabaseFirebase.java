@@ -1,5 +1,6 @@
 package com.example.news.firebase;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -53,6 +55,37 @@ public class DatabaseFirebase {
         rss.put("link", link);
         db.collection("rss").add(rss);
     }
+
+    public void addHistory(String username, Item item) {
+//        DocumentReference docRef = FirebaseFirestore.getInstance().collection("history").document(item.getId());
+//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    DocumentSnapshot document = task.getResult();
+//                    if (document.exists()) {
+//                        // Tài liệu tồn tại
+//                        System.out.println("history tồn tại");
+//                    } else {
+//                        // Tài liệu không tồn tại
+                        Map<String, Object> rss = new HashMap<>();
+                        rss.put("username", username);
+                        rss.put("title", item.getTitle());
+                        rss.put("link", item.getLink());
+                        rss.put("date", item.getDate());
+                        rss.put("linkImg", item.getLinkImg());
+                        db.collection("history").add(rss);
+//                    }
+//                } else {
+//                    System.out.println("lỗi truy vấn history");
+//                    System.out.println(task.getException());
+//                    // Xảy ra lỗi khi truy vấn tài liệu
+//                }
+//            }
+//        });
+
+    }
+
 
     public void deleteRss(String document) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
