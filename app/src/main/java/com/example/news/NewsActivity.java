@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.news.adapter.News_Adapter;
 import com.example.news.enity.Item;
+import com.example.news.firebase.DatabaseFirebase;
 import com.example.news.xmlpullparser.XmlPullParserHandler;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class NewsActivity extends AppCompatActivity {
     ListView lv;
     public List<Item> ItemLists = new ArrayList<>();
     String link;
-
+    DatabaseFirebase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +47,8 @@ public class NewsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 openLink(i);
+
+                db.addHistory("212323",ItemLists.get(1));
             }
         });
     }
