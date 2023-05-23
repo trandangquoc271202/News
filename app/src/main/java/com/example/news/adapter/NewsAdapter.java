@@ -25,6 +25,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
     NewsDAO dao;
     View v_del;
     MainActivity main;
+
     public NewsAdapter(@NonNull Context context,MainActivity activity, ArrayList<News> list) {
         super(context, 0, list);
         this.context = context;
