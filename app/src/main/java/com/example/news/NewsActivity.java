@@ -2,6 +2,7 @@ package com.example.news;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -11,11 +12,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.news.adapter.News_Adapter;
 import com.example.news.enity.Item;
+import com.example.news.firebase.DatabaseFirebase;
 import com.example.news.xmlpullparser.XmlPullParserHandler;
 
 import java.io.IOException;
@@ -29,7 +32,8 @@ public class NewsActivity extends AppCompatActivity {
     ListView lv;
     public List<Item> ItemLists = new ArrayList<>();
     String link;
-
+    Dialog dialog;
+    DatabaseFirebase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,18 +41,53 @@ public class NewsActivity extends AppCompatActivity {
         lv = findViewById(R.id.lv_news);
         Intent intent = getIntent();
         link = intent.getStringExtra("link");
+        db = new DatabaseFirebase();
         Toast.makeText(getApplicationContext(), ""+link, Toast.LENGTH_SHORT).show();
         if (checkInternet()){
             downloadNew();
         }
-
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 openLink(i);
             }
         });
+
+        lv.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            openDialogFavorite(ItemLists.get(i));
+            return true;
+        });
     }
+
+    public void openDialogFavorite(Item item){
+        dialog = new Dialog(NewsActivity.this);
+        dialog.setContentView(R.layout.dialog_add_favorite);
+        Button button = dialog.findViewById(R.id.btn_add_favorite);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (checkExistFavorite(item.getId())){
+                    Toast.makeText(getApplicationContext(), "Đã tồn tại trong danh sách yêu thích!", Toast.LENGTH_SHORT).show();
+                } else {
+                    db.addFavorite(item, "123123");
+                    dialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Thêm vào danh sách yêu thích thành công!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        dialog.show();
+    }
+
+    public boolean checkExistFavorite(String id) {
+        for (int i = 0; i < ItemLists.size(); i++) {
+            if (ItemLists.get(i).getId().equals(id)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean checkInternet(){
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
