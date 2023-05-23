@@ -63,8 +63,8 @@ public class HistoryActivity extends AppCompatActivity {
         link = intent.getStringExtra("link");
         Toast.makeText(getApplicationContext(), "" + link, Toast.LENGTH_SHORT).show();
         db = new DatabaseFirebase();
-
         loadAllItems();
+        UpdateLV();
         ListDatabaseAdapter listdata = new ListDatabaseAdapter(ItemLists);
         listdata.updateAdapterData(ItemLists);
         lv.setAdapter(listdata);
@@ -98,7 +98,7 @@ public class HistoryActivity extends AppCompatActivity {
                                 item = new Item(document.getData().get("title").toString(), document.getData().get("link").toString(), document.getData().get("date").toString(), document.getData().get("linkImg").toString(), document.getId());
                                 ItemLists.add(item);
                                 // Sau khi tải danh sách mới, cập nhật lại ListView
-                                ((BaseAdapter) lv.getAdapter()).notifyDataSetChanged();
+                                UpdateLV(ItemLists);
 
                             }
                         } else {
@@ -125,6 +125,15 @@ public class HistoryActivity extends AppCompatActivity {
         intent.putExtra("linknews", ItemLists.get(i).getLink());
         startActivity(intent);
 
+    }
+    public void UpdateLV() {
+        ItemLists = new ArrayList<Item>();
+        loadAllItems();
+    }
+    public void UpdateLV(ArrayList<Item> listRss) {
+        ItemLists = (ArrayList<Item>) listRss;
+        ListDatabaseAdapter listdata = new ListDatabaseAdapter(ItemLists);
+        lv.setAdapter(listdata);
     }
 
     public class ListDatabaseAdapter extends BaseAdapter {
