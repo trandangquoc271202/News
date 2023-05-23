@@ -5,6 +5,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.news.MainActivity;
+import com.example.news.enity.Item;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -50,6 +51,16 @@ public class DatabaseFirebase {
         rss.put("name", name);
         rss.put("link", link);
         db.collection("rss").add(rss);
+    }
+
+    public void addHistory(String username, Item item) {
+        Map<String, Object> rss = new HashMap<>();
+        rss.put("username", username);
+        rss.put("title", item.getTitle());
+        rss.put("link", item.getLink());
+        rss.put("date", item.getDate());
+        rss.put("linkImg", item.getLinkImg());
+        db.collection("History").add(rss);
     }
 
     public void deleteRss(String document) {
