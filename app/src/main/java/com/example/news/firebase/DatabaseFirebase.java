@@ -60,7 +60,7 @@ public class DatabaseFirebase {
         rss.put("link", item.getLink());
         rss.put("date", item.getDate());
         rss.put("linkImg", item.getLinkImg());
-        db.collection("History").add(rss);
+        db.collection("history").add(rss);
     }
 
 

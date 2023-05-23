@@ -52,7 +52,7 @@ public class HistoryActivity extends AppCompatActivity {
     DatabaseFirebase db;
     ImageView iv_news;
     TextView tv_title, tv_link, tv_date;
-
+    Button btn_delete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +62,13 @@ public class HistoryActivity extends AppCompatActivity {
         Intent intent = getIntent();
         link = intent.getStringExtra("link");
         Toast.makeText(getApplicationContext(), "" + link, Toast.LENGTH_SHORT).show();
-
+        db = new DatabaseFirebase();
 
         loadAllItems();
         ListDatabaseAdapter listdata = new ListDatabaseAdapter(ItemLists);
-
+        listdata.updateAdapterData(ItemLists);
         lv.setAdapter(listdata);
+
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -76,7 +77,10 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
     }
-
+    private void recreateActivity() {
+        // Gọi phương thức recreate() để tải lại layout activity_history
+        loadAllItems();
+    }
     private void loadAllItems() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -87,13 +91,11 @@ public class HistoryActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         User username;
                         Item item;
-                        String idDocument;
                         if (task.isSuccessful()) {
                             ArrayList<News> list = new ArrayList<News>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                idDocument = new String(document.getId());
                                 username = new User(document.getData().get("username").toString());
-                                item = new Item(document.getData().get("title").toString(), document.getData().get("link").toString(), document.getData().get("date").toString(), document.getData().get("linkImg").toString());
+                                item = new Item(document.getData().get("title").toString(), document.getData().get("link").toString(), document.getData().get("date").toString(), document.getData().get("linkImg").toString(), document.getId());
                                 ItemLists.add(item);
                                 // Sau khi tải danh sách mới, cập nhật lại ListView
                                 ((BaseAdapter) lv.getAdapter()).notifyDataSetChanged();
@@ -166,7 +168,7 @@ public class HistoryActivity extends AppCompatActivity {
                         public void onSuccess(Void aVoid) {
                             list.remove(position);
                             notifyDataSetChanged();
-                            loadAllItems();
+                            recreateActivity();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -176,6 +178,15 @@ public class HistoryActivity extends AppCompatActivity {
                             Log.e(TAG, "Error deleting document", e);
                         }
                     });
+        }
+
+
+
+        private void recreate() {
+        }
+
+        public void updateAdapterData(ArrayList<Item> newData) {
+            ItemLists = newData;
         }
 
         @Override
@@ -190,6 +201,7 @@ public class HistoryActivity extends AppCompatActivity {
             tv_title = viewString.findViewById(R.id.tv_title_item_news);
             tv_link = viewString.findViewById(R.id.tv_link_news);
             tv_date = viewString.findViewById(R.id.tv_date_news);
+            btn_delete = viewString.findViewById(R.id.btn_delete);
 
             Item currentItem = getItem(i);
             Picasso.with(viewGroup.getContext()).load(getItem(i).getLinkImg())
@@ -200,15 +212,17 @@ public class HistoryActivity extends AppCompatActivity {
             tv_title.setText(currentItem.getTitle());
             tv_link.setText(currentItem.getLink());
             tv_date.setText(currentItem.getDate());
-            //
-            Button btnDelete = viewString.findViewById(R.id.btn_delete);
-            btnDelete.setOnClickListener(new View.OnClickListener() {
+
+            //  lắng nghe sự kiện click vào nút xóa
+            btn_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     deleteItem(i);
                 }
             });
+
             return viewString;
         }
+
     }
 }

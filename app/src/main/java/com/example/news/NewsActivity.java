@@ -38,6 +38,7 @@ public class NewsActivity extends AppCompatActivity {
         lv = findViewById(R.id.lv_news);
         Intent intent = getIntent();
         link = intent.getStringExtra("link");
+        db = new DatabaseFirebase();
         Toast.makeText(getApplicationContext(), ""+link, Toast.LENGTH_SHORT).show();
         if (checkInternet()){
             downloadNew();
@@ -47,8 +48,7 @@ public class NewsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 openLink(i);
-
-                db.addHistory("212323",ItemLists.get(1));
+                db.addHistory("212323",ItemLists.get(i));
             }
         });
     }
