@@ -5,6 +5,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.news.MainActivity;
+import com.example.news.enity.Item;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -67,5 +68,19 @@ public class DatabaseFirebase {
 
         docRef.set(newData);
     }
+    public void addFavorite(Item item, String id) {
+        Map<String, Object> favorite = new HashMap<>();
+        favorite.put("idUser", id);
+        favorite.put("title", item.getTitle());
+        favorite.put("link", item.getLink());
+        favorite.put("date", item.getDate());
+        favorite.put("linkImg", item.getLinkImg());
+        db.collection("favorite").add(favorite);
+    }
 
+    public void deleteFavorite(String document) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("favorite").document(document);
+        docRef.delete();
+    }
 }

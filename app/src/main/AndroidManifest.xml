@@ -23,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity
+            android:name=".ManageListFavorite"
+            android:exported="false" />
+        <activity
             android:name=".ManageRss"
             android:exported="true"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"></activity>
@@ -31,7 +34,8 @@
             android:exported="true" />
         <activity
             android:name=".NewsActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true"
