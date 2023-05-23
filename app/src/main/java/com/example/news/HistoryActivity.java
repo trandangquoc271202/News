@@ -153,7 +153,7 @@ public class HistoryActivity extends AppCompatActivity {
         public View getView(int i, View view, ViewGroup viewGroup) {
             View viewString;
             if (view == null) {
-                viewString = View.inflate(viewGroup.getContext(), R.layout.item_newss, null);
+                viewString = View.inflate(viewGroup.getContext(), R.layout.item_history_new, null);
             } else {
                 viewString = view;
             }
