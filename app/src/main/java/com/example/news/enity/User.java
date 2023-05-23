@@ -9,24 +9,20 @@ public class User {
     private String role;
     private String typeAccount;
 
-    public User(String name, String username, String password, String role, String typeAccount) {
-
-    }
     public User(String name, String username, String password, String role, String typeAccount, String id, String email) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.role = role;
         this.typeAccount = typeAccount;
-    }
-
-    public User(String username) {
-        this.username=username;
         this.id = id;
         this.email = email;
     }
     public User(){
 
+    }
+    public User(String name){
+        this.name = name;
     }
     public String getId() {
         return id;
@@ -75,6 +71,7 @@ public class User {
     public void setTypeAccount(String typeAccount) {
         this.typeAccount = typeAccount;
     }
+
     public String getEmail() {
         return email;
     }
@@ -82,4 +79,5 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }
