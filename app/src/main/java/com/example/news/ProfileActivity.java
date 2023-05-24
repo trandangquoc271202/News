@@ -97,7 +97,17 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
-
+        tv_update = findViewById(R.id.tv_update);
+        tv_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, UpdateInfoActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("idUser", idUser);
+                intent.putExtra("data", bundle);
+                startActivity(intent);
+            }
+        });
         displayUser(idUser);
     }
 

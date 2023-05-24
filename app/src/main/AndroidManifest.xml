@@ -23,16 +23,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity
+            android:name=".UpdateInfoActivity"
+            android:exported="false" />
+        <activity
             android:name=".CategoryActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
-            android:exported="true">
-
-        </activity>
+            android:exported="true"></activity>
         <activity
             android:name=".ProfileActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".DetailUser"
             android:exported="false" />

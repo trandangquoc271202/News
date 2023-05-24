@@ -81,7 +81,6 @@ public class DatabaseFirebase {
         Map<String, Object> newData = new HashMap<>();
         newData.put("name", name);
         newData.put("link", link);
-
         docRef.set(newData);
     }
 
@@ -129,5 +128,19 @@ public void saveAccount(String username, String password, String email){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("favorite").document(document);
         docRef.delete();
+    }
+    public void updateNameUser(String name, String id) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("users").document(id);
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("name", name);
+        docRef.update(newData);
+    }
+    public void updatePassUser(String pass, String id) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("users").document(id);
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("password", pass);
+        docRef.update(newData);
     }
 }

@@ -54,7 +54,6 @@ public class ManageListFavorite extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("data");
         idUser = bundle.getString("idUser");
-        Toast.makeText(getApplicationContext(), idUser, Toast.LENGTH_SHORT).show();
         lv_favourite = findViewById(R.id.lv_favorite);
         btn_back = (Button) findViewById(R.id.btn_back);
         db = new DatabaseFirebase();
