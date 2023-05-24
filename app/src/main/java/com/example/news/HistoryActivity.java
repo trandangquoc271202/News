@@ -65,13 +65,11 @@ public class HistoryActivity extends AppCompatActivity {
         idUser = bundle.getString("idUser");
 
         db = new DatabaseFirebase();
-        loadAllItems();
+//        loadAllItems();
         UpdateLV();
         ListDatabaseAdapter listdata = new ListDatabaseAdapter(ItemLists);
         listdata.updateAdapterData(ItemLists);
         lv.setAdapter(listdata);
-
-
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -86,7 +84,7 @@ public class HistoryActivity extends AppCompatActivity {
     private void loadAllItems() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("history").whereEqualTo("username", idUser)
+        db.collection("history").whereEqualTo("idUser", idUser)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -98,9 +96,7 @@ public class HistoryActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 item = new Item(document.getId(),document.getData().get("title").toString(), document.getData().get("link").toString(), document.getData().get("date").toString(), document.getData().get("linkImg").toString());
                                 ItemLists.add(item);
-                                // Sau khi tải danh sách mới, cập nhật lại ListView
                                 UpdateLV(ItemLists);
-
                             }
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
@@ -111,8 +107,6 @@ public class HistoryActivity extends AppCompatActivity {
 
 
     public void openLink(int i) {
-
-        Toast.makeText(getApplicationContext(), "click", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(HistoryActivity.this, WebViewActivity.class);
         intent.putExtra("linknews", ItemLists.get(i).getLink());
         startActivity(intent);
@@ -154,10 +148,6 @@ public class HistoryActivity extends AppCompatActivity {
             return list.get(i).getId();
         }
 
-        public void deleteDB(int i) {
-            this.list.remove(i);
-        }
-
         public void deleteItem(int position) {
             Item item = list.get(position);
             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -179,11 +169,6 @@ public class HistoryActivity extends AppCompatActivity {
                             Log.e(TAG, "Error deleting document", e);
                         }
                     });
-        }
-
-
-
-        private void recreate() {
         }
 
         public void updateAdapterData(ArrayList<Item> newData) {
