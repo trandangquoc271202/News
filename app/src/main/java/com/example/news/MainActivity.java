@@ -57,11 +57,13 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (checkNetwork()) {
                     String link = list.get(i).getLink();
+                    String title = list.get(i).getName();
                     if (!link.isEmpty()) {
                         Intent intent = new Intent(MainActivity.this, NewsActivity.class);
                         Bundle bundle = new Bundle();
                         bundle.putString("idUser", idUser);
                         bundle.putString("link", link);
+                        bundle.putString("title", title);
                         intent.putExtra("data" ,bundle);
                         startActivity(intent);
                     }
