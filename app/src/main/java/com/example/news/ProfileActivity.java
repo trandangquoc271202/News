@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewStub;
@@ -24,6 +25,7 @@ public class ProfileActivity extends AppCompatActivity {
     View back, admin;
     String idUser;
     Dialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +93,9 @@ public class ProfileActivity extends AppCompatActivity {
         tv_exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SQLiteDatabase db = openOrCreateDatabase("statelogin", MODE_PRIVATE, null);
+                db.delete("login", null, null);
+                db.close();
                 Intent intent = new Intent(ProfileActivity.this, Login.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -141,7 +146,7 @@ public class ProfileActivity extends AppCompatActivity {
                     if (documentSnapshot.getString("role").equals("user")) {
                         tv_admin.setVisibility(View.GONE);
                         admin.setVisibility(View.GONE);
-                    }else{
+                    } else {
                         tv_admin.setVisibility(View.VISIBLE);
                     }
                 }
@@ -153,7 +158,7 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    public void dialogAdmin(){
+    public void dialogAdmin() {
         dialog = new Dialog(ProfileActivity.this);
         dialog.setContentView(R.layout.admin_dialog);
         TextView tv_rss = dialog.findViewById(R.id.tv_rss);
@@ -179,6 +184,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         dialog.show();
     }
+
     public static String hideEmail(String email) {
         int atSignIndex = email.indexOf('@');
         int numOfChars = atSignIndex;
