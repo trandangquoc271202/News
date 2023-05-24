@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".CategoryActivity">
     <TextView
         android:id="@+id/background"
         android:layout_width="match_parent"
@@ -63,9 +62,9 @@
     </LinearLayout>
     <ListView
         android:id="@+id/lv_main"
-        android:layout_width="360dp"
+        android:layout_width="395dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="374dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

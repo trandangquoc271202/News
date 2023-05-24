@@ -32,7 +32,7 @@ public class NewsActivity extends AppCompatActivity {
     ListView lv;
     public List<Item> ItemLists = new ArrayList<>();
     String link;
-
+    String idUser;
     Dialog dialog;
     DatabaseFirebase db;
     @Override
@@ -41,15 +41,17 @@ public class NewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news);
         lv = findViewById(R.id.lv_news);
         Intent intent = getIntent();
-        link = intent.getStringExtra("link");
+        Bundle bundle = intent.getBundleExtra("data");
+        idUser = bundle.getString("idUser");
+        link = bundle.getString("link");
         db = new DatabaseFirebase();
-        Toast.makeText(getApplicationContext(), ""+link, Toast.LENGTH_SHORT).show();
+
         downloadNew();
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                db.addHistory("212323",ItemLists.get(i));
+                db.addHistory(idUser,ItemLists.get(i));
                 openLink(i);
             }
         });
@@ -67,7 +69,7 @@ public class NewsActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    db.addFavorite(item, "123123");
+                    db.addFavorite(item, idUser);
                     dialog.dismiss();
                     Toast.makeText(getApplicationContext(), "Thêm vào danh sách yêu thích thành công!", Toast.LENGTH_SHORT).show();
             }
