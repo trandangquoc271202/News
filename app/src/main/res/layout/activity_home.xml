@@ -37,30 +37,42 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp">
+
         <TextView
             android:id="@+id/tv_home"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="#44bdb4"
             android:gravity="center"
+            android:text="Trang chủ"
             android:textColor="@color/white"
             android:textSize="22dp"
-            android:textStyle="bold"
-            android:background="#44bdb4"
-            android:text="Trang chủ" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_category"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textColor="@color/white"
-            android:textSize="22dp"
-            android:textStyle="bold"
             android:background="#77dad3"
             android:gravity="center"
-            android:text="Danh mục" />
+            android:text="Danh mục"
+            android:textColor="@color/white"
+            android:textSize="22dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
+    <ListView
+        android:id="@+id/lv_news"
+        android:layout_width="395dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="130dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
