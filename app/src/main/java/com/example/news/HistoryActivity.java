@@ -63,9 +63,7 @@ public class HistoryActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("data");
         idUser = bundle.getString("idUser");
-
         db = new DatabaseFirebase();
-//        loadAllItems();
         UpdateLV();
         ListDatabaseAdapter listdata = new ListDatabaseAdapter(ItemLists);
         listdata.updateAdapterData(ItemLists);

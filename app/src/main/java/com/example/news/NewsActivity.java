@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.news.adapter.News_Adapter;
@@ -31,10 +32,12 @@ import java.util.List;
 public class NewsActivity extends AppCompatActivity {
     ListView lv;
     public List<Item> ItemLists = new ArrayList<>();
-    String link;
+    String link, title;
     String idUser;
     Dialog dialog;
     DatabaseFirebase db;
+    View back;
+    TextView tv_title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +47,19 @@ public class NewsActivity extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra("data");
         idUser = bundle.getString("idUser");
         link = bundle.getString("link");
+        title = bundle.getString("title");
+
+        tv_title = findViewById(R.id.tv_title);
+        tv_title.setText(title);
         db = new DatabaseFirebase();
+
+        back = findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         downloadNew();
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
