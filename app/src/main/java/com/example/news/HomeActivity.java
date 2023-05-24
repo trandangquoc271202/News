@@ -133,7 +133,6 @@ public class HomeActivity extends AppCompatActivity {
         protected void onPostExecute(List<Item> list) {
             super.onPostExecute(list);
             adapter = new News_Adapter(context, (ArrayList<Item>) list);
-            Toast.makeText(getApplicationContext(), list.get(0).getTitle()+"", Toast.LENGTH_SHORT).show();
             if (list != null){
                 listView.setAdapter(adapter);
             }
