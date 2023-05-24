@@ -51,7 +51,7 @@ public class DatabaseFirebase {
 //                    } else {
 //                        // Tài liệu không tồn tại
                         Map<String, Object> rss = new HashMap<>();
-                        rss.put("username", username);
+                        rss.put("idUser", username);
                         rss.put("title", item.getTitle());
                         rss.put("link", item.getLink());
                         rss.put("date", item.getDate());
