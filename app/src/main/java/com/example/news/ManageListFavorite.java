@@ -45,10 +45,16 @@ public class ManageListFavorite extends AppCompatActivity {
     Dialog dialog;
     ManageListFavoriteAdapter adapter;
     DatabaseFirebase db;
+    String idUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_list_favorite);
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("data");
+        idUser = bundle.getString("idUser");
+        Toast.makeText(getApplicationContext(), idUser, Toast.LENGTH_SHORT).show();
         lv_favourite = findViewById(R.id.lv_favorite);
         btn_back = (Button) findViewById(R.id.btn_back);
         db = new DatabaseFirebase();
@@ -61,8 +67,6 @@ public class ManageListFavorite extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-        link = intent.getStringExtra("link");
         if (checkInternet()) {
             downloadNew();
         }
@@ -81,7 +85,7 @@ public class ManageListFavorite extends AppCompatActivity {
 
     public void loadAllFavourite() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("favorite").whereEqualTo("idUser", "123123").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        db.collection("favorite").whereEqualTo("idUser", idUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 Item item;

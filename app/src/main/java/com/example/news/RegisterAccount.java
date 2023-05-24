@@ -30,7 +30,7 @@ public class RegisterAccount extends AppCompatActivity {
     private EditText Email;
     private EditText Password;
     private EditText ConfirmPassword;
-    private Button RegisterButton;
+    private Button RegisterButton, button_login;
 
     DatabaseFirebase database;
     @Override
@@ -42,8 +42,8 @@ public class RegisterAccount extends AppCompatActivity {
         Email = findViewById(R.id.edit_text_email);
         Password = findViewById(R.id.edit_text_password);
         ConfirmPassword = findViewById(R.id.edit_text_confirm_password);
+        button_login = findViewById(R.id.button_login);
         RegisterButton = findViewById(R.id.button_register);
-
         RegisterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,6 +61,12 @@ public class RegisterAccount extends AppCompatActivity {
                     // Hiển thị thông báo lỗi nếu nhập sai thông tin đăng kí
                     Toast.makeText(RegisterAccount.this, "Thông tin nhập vào không hợp lệ", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        button_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 }

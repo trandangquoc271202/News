@@ -30,24 +30,6 @@ public class DatabaseFirebase {
         this.db = FirebaseFirestore.getInstance();
     }
 
-    public void writeUser(String username, String pass) {
-        Map<String, Object> user = new HashMap<>();
-        user.put("username", username);
-        user.put("passwork", pass);
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-    }
 
     public void addRss(String name, String link) {
         Map<String, Object> rss = new HashMap<>();
@@ -128,6 +110,7 @@ public void saveAccount(String username, String password, String email){
     save.put("username", username);
     save.put("password", password);
     save.put("email", email);
+    save.put("name", "");
     save.put("role", "user");
     save.put("typeAccount","0");
     db.collection("users").add(save);

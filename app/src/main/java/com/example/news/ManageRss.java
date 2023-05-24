@@ -41,14 +41,12 @@ import java.util.ArrayList;
 
 public class ManageRss extends AppCompatActivity {
     ListView lv_main;
-    View view_add;
+    View view_add, back;
     Dialog dialog;
     TextInputEditText ed_name, ed_link;
-    Button btn_add, btn_del, btn_cancel, btn_back,btn_update;
+    Button btn_add, btn_del, btn_cancel,btn_update;
 
     ManageRssAdapter adapter;
-    NewsDAO dao;
-    News news;
     ArrayList<News> list;
     DatabaseFirebase db;
     @Override
@@ -58,12 +56,11 @@ public class ManageRss extends AppCompatActivity {
         Intent intent = getIntent();
         lv_main = findViewById(R.id.lv_main);
         view_add = findViewById(R.id.view_add);
-        btn_back = (Button) findViewById(R.id.bn_back);
+        back =  findViewById(R.id.back);
         db = new DatabaseFirebase();
-        dao = new NewsDAO(ManageRss.this);
         UpdateLV();
         deleteCache(getApplicationContext()); //xóa cache
-        btn_back.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                finish();

@@ -52,7 +52,7 @@ public class Login extends AppCompatActivity {
         });
 
     }
-    private void AccountExist(String username, String pass){
+    private void AccountExist(String username, String pass) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users")
                 .get()
@@ -62,24 +62,28 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                         if (task.isSuccessful()) {
-                            boolean result =false;
+                            boolean result = false;
+                            String id="";
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                if(document.getData().get("username").toString().equals(username) ||document.getData().get("password").toString().equals(pass) ){
+                                if (document.getData().get("username").toString().equals(username) && document.getData().get("password").toString().equals(pass)) {
                                     result = true;
+                                    id = document.getId();
                                     break;
                                 }
                             }
-                            if(result){
-                                Intent intent = new Intent(Login.this, MainActivity.class);
+                            if (result) {
+                                Intent intent = new Intent(Login.this, HomeActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("idUser", id);
+                                intent.putExtra("data" ,bundle);
                                 startActivity(intent);
                                 finish();
                             }
-                            if(!result){
+                            if (!result) {
 
                             }
                         }
                     }
                 });
-
     }
     }

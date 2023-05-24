@@ -53,15 +53,17 @@ public class HistoryActivity extends AppCompatActivity {
     ImageView iv_news;
     TextView tv_title, tv_link, tv_date;
     Button btn_delete;
-
+    String idUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         lv = findViewById(R.id.lv_history);
+
         Intent intent = getIntent();
-        link = intent.getStringExtra("link");
-        Toast.makeText(getApplicationContext(), "" + link, Toast.LENGTH_SHORT).show();
+        Bundle bundle = intent.getBundleExtra("data");
+        idUser = bundle.getString("idUser");
+
         db = new DatabaseFirebase();
         loadAllItems();
         UpdateLV();
@@ -84,7 +86,7 @@ public class HistoryActivity extends AppCompatActivity {
     private void loadAllItems() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("history")
+        db.collection("history").whereEqualTo("username", idUser)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
