@@ -15,17 +15,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.news.adapter.ManageRssAdapter;
 import com.example.news.adapter.NewsAdapter;
 import com.example.news.dao.NewsDAO;
 import com.example.news.enity.News;
-import com.example.news.firebase.DatabaseFirebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -35,12 +32,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     ListView lv_main;
-    View view_add;
+    View view_add, view_add_favorite;
     Dialog dialog;
     TextInputEditText ed_name, ed_link;
     Button btn_add, btn_del, btn_cancel;
@@ -55,17 +50,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         lv_main = findViewById(R.id.lv_main);
         view_add = findViewById(R.id.view_add);
+        view_add_favorite = findViewById(R.id.view_list_favorite);
 
         dao = new NewsDAO(MainActivity.this);
         UpdateLV();
 
         deleteCache(getApplicationContext()); //xóa cache
-
+        view_add_favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ManageListFavorite.class);
+                startActivity(intent);
+            }
+        });
         view_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Toast.makeText(getApplicationContext(), "Click", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, ManageRss.class);
+                Intent intent = new Intent(MainActivity.this, HistoryActivity.class);
                 startActivity(intent);
             }
         });

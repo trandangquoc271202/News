@@ -23,8 +23,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity
+            android:name=".DetailUser"
+            android:exported="false" />
+        <activity
+            android:name=".ListUser"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name=".ManageRss"
             android:exported="true"
+
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge">
             </activity>
         <activity
@@ -36,6 +50,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,6 +58,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".HistoryActivity"
+            android:exported="true"/>
+        <activity android:name=".ManageListFavorite"
+            android:exported="true"/>
     </application>
 
 </manifest>

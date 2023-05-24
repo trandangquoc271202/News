@@ -2,6 +2,7 @@ package com.example.news;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -11,11 +12,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.news.adapter.News_Adapter;
 import com.example.news.enity.Item;
+import com.example.news.firebase.DatabaseFirebase;
 import com.example.news.xmlpullparser.XmlPullParserHandler;
 
 import java.io.IOException;
@@ -30,6 +33,8 @@ public class NewsActivity extends AppCompatActivity {
     public List<Item> ItemLists = new ArrayList<>();
     String link;
 
+    Dialog dialog;
+    DatabaseFirebase db;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,27 +42,39 @@ public class NewsActivity extends AppCompatActivity {
         lv = findViewById(R.id.lv_news);
         Intent intent = getIntent();
         link = intent.getStringExtra("link");
+        db = new DatabaseFirebase();
         Toast.makeText(getApplicationContext(), ""+link, Toast.LENGTH_SHORT).show();
-        if (checkInternet()){
-            downloadNew();
-        }
-
+        downloadNew();
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                db.addHistory("212323",ItemLists.get(i));
                 openLink(i);
             }
         });
-    }
-    public boolean checkInternet(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        if (wifi.isConnected() || mobile.isConnected()){
+
+        lv.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            openDialogFavorite(ItemLists.get(i));
             return true;
-        }
-        return false;
+        });
     }
+
+    public void openDialogFavorite(Item item){
+        dialog = new Dialog(NewsActivity.this);
+        dialog.setContentView(R.layout.dialog_add_favorite);
+        Button button = dialog.findViewById(R.id.btn_add_favorite);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    db.addFavorite(item, "123123");
+                    dialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Thêm vào danh sách yêu thích thành công!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        dialog.show();
+    }
+
     public void openLink(int i){
         Toast.makeText(getApplicationContext(), "click", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(NewsActivity.this, WebViewActivity.class);
