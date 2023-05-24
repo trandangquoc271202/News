@@ -119,7 +119,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
                     tv_name.setText(documentSnapshot.getString("name") + "");
-                    tv_email.setText(documentSnapshot.getString("email") + "");
+                    tv_email.setText(hideEmail(documentSnapshot.getString("email")) + "");
                 } else {
 
                 }
@@ -178,6 +178,25 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+    public static String hideEmail(String email) {
+        int atSignIndex = email.indexOf('@');
+        int numOfChars = atSignIndex;
+        String[] parts = email.split("@");
+        String masked = "";
+        String domain = parts[1];
+        int len = email.length();
+        int hideLen = Math.min(len - numOfChars, numOfChars);
+        for (int i = 0; i < len - domain.length(); i++) {
+            if (i < hideLen || i >= len - numOfChars) {
+                masked += "*";
+            } else {
+                masked += email.charAt(i);
+            }
+        }
+        masked += domain;
+
+        return masked;
     }
 
 }
