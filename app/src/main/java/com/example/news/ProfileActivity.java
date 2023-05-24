@@ -50,7 +50,7 @@ public class ProfileActivity extends AppCompatActivity {
         tv_history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ProfileActivity.this, HistoryActivity.class);
+                Intent intent = new Intent(ProfileActivity.this, History.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("idUser", idUser);
                 intent.putExtra("data", bundle);
