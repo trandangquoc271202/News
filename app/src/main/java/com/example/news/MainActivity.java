@@ -35,7 +35,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     ListView lv_main;
-    View view_add, view_add_favorite;
+    View view_add;
     Dialog dialog;
     TextInputEditText ed_name, ed_link;
     Button btn_add, btn_del, btn_cancel;
@@ -50,19 +50,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         lv_main = findViewById(R.id.lv_main);
         view_add = findViewById(R.id.view_add);
-        view_add_favorite = findViewById(R.id.view_list_favorite);
 
         dao = new NewsDAO(MainActivity.this);
         UpdateLV();
 
         deleteCache(getApplicationContext()); //xóa cache
-        view_add_favorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ManageListFavorite.class);
-                startActivity(intent);
-            }
-        });
         view_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
