@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ManageListFavorite">
+    tools:context=".History">
 
     <TextView
         android:id="@+id/textView2"
@@ -17,7 +17,7 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp" />
     <ListView
-        android:id="@+id/lv_favorite"
+        android:id="@+id/lv_news"
         android:layout_width="395dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
         android:layout_marginTop="30dp"
-        android:text="Danh sách yêu thích"
+        android:text="Lịch sử tin đã xem"
         android:textColor="@color/white"
         android:textSize="25dp"
         android:textStyle="bold"

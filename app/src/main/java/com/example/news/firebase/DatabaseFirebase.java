@@ -143,4 +143,9 @@ public void saveAccount(String username, String password, String email){
         newData.put("password", pass);
         docRef.update(newData);
     }
+    public void deleteHistory(String document) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("history").document(document);
+        docRef.delete();
+    }
 }
