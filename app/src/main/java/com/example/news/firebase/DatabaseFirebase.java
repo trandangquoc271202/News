@@ -30,24 +30,6 @@ public class DatabaseFirebase {
         this.db = FirebaseFirestore.getInstance();
     }
 
-    public void writeUser(String username, String pass) {
-        Map<String, Object> user = new HashMap<>();
-        user.put("username", username);
-        user.put("passwork", pass);
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
-    }
 
     public void addRss(String name, String link) {
         Map<String, Object> rss = new HashMap<>();
@@ -69,7 +51,7 @@ public class DatabaseFirebase {
 //                    } else {
 //                        // Tài liệu không tồn tại
                         Map<String, Object> rss = new HashMap<>();
-                        rss.put("username", username);
+                        rss.put("idUser", username);
                         rss.put("title", item.getTitle());
                         rss.put("link", item.getLink());
                         rss.put("date", item.getDate());
@@ -99,14 +81,35 @@ public class DatabaseFirebase {
         Map<String, Object> newData = new HashMap<>();
         newData.put("name", name);
         newData.put("link", link);
+        docRef.set(newData);
+    }
+
+    public void deleteUser(String document) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("users").document(document);
+        docRef.delete();
+    }
+
+    public void updateUser(String document, String name, String username, String password, String role, String typeAccount, String email) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("users").document(document);
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("name", name);
+        newData.put("username", username);
+        newData.put("password", password);
+        newData.put("role", role);
+        newData.put("typeAccount", typeAccount);
+        newData.put("email", email);
 
         docRef.set(newData);
     }
+
 public void saveAccount(String username, String password, String email){
     Map<String, Object> save = new HashMap<>();
     save.put("username", username);
     save.put("password", password);
     save.put("email", email);
+    save.put("name", "");
     save.put("role", "user");
     save.put("typeAccount","0");
     db.collection("users").add(save);
@@ -125,5 +128,19 @@ public void saveAccount(String username, String password, String email){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("favorite").document(document);
         docRef.delete();
+    }
+    public void updateNameUser(String name, String id) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("users").document(id);
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("name", name);
+        docRef.update(newData);
+    }
+    public void updatePassUser(String pass, String id) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("users").document(id);
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("password", pass);
+        docRef.update(newData);
     }
 }
