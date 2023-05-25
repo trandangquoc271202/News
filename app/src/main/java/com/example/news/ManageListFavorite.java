@@ -38,6 +38,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class ManageListFavorite extends AppCompatActivity {
     ListView lv_favourite;
@@ -84,6 +85,13 @@ public class ManageListFavorite extends AppCompatActivity {
         lv_favourite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                CompletableFuture<Boolean> isExistfuture = db.checkExistHistory(idUser, listFavorite.get(i));
+                isExistfuture.thenAccept(isExist -> {
+                    if (!isExist) {
+                        db.addHistory(idUser, listFavorite.get(i));
+                        dialog.dismiss();
+                    }
+                });
                 openLink(i);
             }
         });
