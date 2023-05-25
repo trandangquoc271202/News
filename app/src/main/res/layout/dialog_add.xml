@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@drawable/btn_ok"
+        android:background="#52a7a1"
         android:text="thêm"
         android:textColor="@color/white" />
 </LinearLayout>

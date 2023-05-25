@@ -3,7 +3,11 @@ package com.example.news;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -52,7 +56,8 @@ public class Login extends AppCompatActivity {
         });
 
     }
-    private void AccountExist(String username, String pass){
+
+    private void AccountExist(String username, String pass) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users")
                 .get()
@@ -62,24 +67,43 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                         if (task.isSuccessful()) {
-                            boolean result =false;
+                            boolean result = false;
+                            String id = "";
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                if(document.getData().get("username").toString().equals(username) ||document.getData().get("password").toString().equals(pass) ){
+                                if (document.getData().get("username").toString().equals(username) && document.getData().get("password").toString().equals(pass)) {
                                     result = true;
+                                    id = document.getId();
                                     break;
                                 }
                             }
-                            if(result){
-                                Intent intent = new Intent(Login.this, MainActivity.class);
+                            if (result) {
+                                writeInfoLogin(id, username, pass);
+                                Intent intent = new Intent(Login.this, HomeActivity.class);
+                                Bundle bundle = new Bundle();
+                                bundle.putString("idUser", id);
+                                intent.putExtra("data", bundle);
                                 startActivity(intent);
                                 finish();
                             }
-                            if(!result){
+                            if (!result) {
 
                             }
                         }
                     }
                 });
-
     }
+    public void writeInfoLogin(String id, String username, String password) {
+        SQLiteDatabase database = openOrCreateDatabase("statelogin", MODE_PRIVATE, null);
+        String sql = "CREATE TABLE login (idUser TEXT,username TEXT,password TEXT)";
+        try {
+            database.execSQL(sql);
+        } catch (Exception e) {
+        }
+        ContentValues values = new ContentValues();
+        values.put("idUser", id);
+        values.put("username", username);
+        values.put("password", password);
+        database.insert("login", null, values);
+        database.close();
     }
+}

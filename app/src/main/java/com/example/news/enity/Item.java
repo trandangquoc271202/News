@@ -1,7 +1,8 @@
 package com.example.news.enity;
 
 public class Item {
-    private String id, title, link, date, linkImg;
+    private String title, link, date, linkImg,id;
+
     public Item() {
     }
 
@@ -53,7 +54,6 @@ public class Item {
     public String getLink() {
         return link;
     }
-
     public void setLink(String link) {
         this.link = link;
     }
