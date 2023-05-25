@@ -49,6 +49,7 @@ public class NewsActivity extends AppCompatActivity {
     DatabaseFirebase db;
     View back;
     TextView tv_title;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,9 +76,19 @@ public class NewsActivity extends AppCompatActivity {
         downloadNew();
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                db.addHistory(idUser,ItemLists.get(i));
+                CompletableFuture<Boolean> isExistfuture = db.checkExistHistory(idUser,ItemLists.get(i));
+                isExistfuture.thenAccept(isExist -> {
+                    if (isExist) {
+                        Toast.makeText(getApplicationContext(), "Đã tồn tại trong danh sách lịch sử!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        db.addHistory(idUser,ItemLists.get(i));
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Thêm vào danh sách lịch sử thành công!", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 openLink(i);
             }
         });

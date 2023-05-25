@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+@RequiresApi(api = Build.VERSION_CODES.N)
 public class DatabaseFirebase {
     FirebaseFirestore db;
 
@@ -43,36 +44,89 @@ public class DatabaseFirebase {
         db.collection("rss").add(rss);
     }
 
-    public void addHistory(String username, Item item) {
-//        DocumentReference docRef = FirebaseFirestore.getInstance().collection("history").document(item.getId());
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    DocumentSnapshot document = task.getResult();
-//                    if (document.exists()) {
-//                        // Tài liệu tồn tại
-//                        System.out.println("history tồn tại");
-//                    } else {
-//                        // Tài liệu không tồn tại
+    public CompletableFuture<Boolean> checkExistFavorite(String idUser,Item item) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        db.collection("favorite").whereEqualTo("idUser", idUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document: task.getResult()) {
+                        Item newItem = new Item(document.getId(),
+                                document.getData().get("title").toString(),
+                                document.getData().get("link").toString(),
+                                document.getData().get("date").toString(),
+                                document.getData().get("linkImg").toString());
+                        if (newItem.getTitle().equals(item.getTitle()) && newItem.getLink().equals(item.getLink()) && newItem.getDate().equals(item.getDate()) && newItem.getLinkImg().equals(item.getLinkImg())) {
+                            future.complete(true);
+                            return;
+                        }
+                    }
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+                future.complete(false);
+            }
+        });
+        return future;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public CompletableFuture<Boolean> checkExistHistory(String idUser, Item item) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+        db.collection("history").whereEqualTo("idUser", idUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        Item newItem = new Item(document.getId(),
+                                document.getData().get("title").toString(),
+                                document.getData().get("link").toString(),
+                                document.getData().get("date").toString(),
+                                document.getData().get("linkImg").toString());
+                        if (newItem.getTitle().equals(item.getTitle()) && newItem.getLink().equals(item.getLink()) && newItem.getDate().equals(item.getDate()) && newItem.getLinkImg().equals(item.getLinkImg())) {
+                            future.complete(true);
+                            return;
+                        }
+                    }
+                } else {
+
+                }
+                future.complete(false);
+            }
+        });
+        return future;
+    }
+
+    public void addHistory(String idUser, Item item) {
         Map<String, Object> rss = new HashMap<>();
-        rss.put("idUser", username);
+        rss.put("idUser", idUser);
         rss.put("title", item.getTitle());
         rss.put("link", item.getLink());
         rss.put("date", item.getDate());
         rss.put("linkImg", item.getLinkImg());
         db.collection("history").add(rss);
-//                    }
-//                } else {
-//                    System.out.println("lỗi truy vấn history");
-//                    System.out.println(task.getException());
-//                    // Xảy ra lỗi khi truy vấn tài liệu
-//                }
-//            }
-//        });
 
     }
-
+/*xoá toàn bộ lịch sử
+ */
+    public void deleteAllHistory(String idUser) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("history").whereEqualTo("idUser", idUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                Item item;
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        deleteHistory(document.getId());
+                    }
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.getException());
+                }
+            }
+        });
+    }
 
     public void deleteRss(String document) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -147,7 +201,6 @@ public class DatabaseFirebase {
         });
         return future;
     }
-
     public void addFavorite(Item item, String id) {
         Map<String, Object> favorite = new HashMap<>();
         favorite.put("idUser", id);

@@ -3,6 +3,7 @@ package com.example.news;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -11,6 +12,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -46,6 +48,7 @@ public class ManageListFavorite extends AppCompatActivity {
     ManageListFavoriteAdapter adapter;
     DatabaseFirebase db;
     String idUser;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +107,7 @@ public class ManageListFavorite extends AppCompatActivity {
         });
 
         confirm.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 db.deleteAllFavorite(idUser);
@@ -122,6 +126,7 @@ public class ManageListFavorite extends AppCompatActivity {
         Button button = dialog.findViewById(R.id.btn_del_favorite);
 
         button.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 db.deleteFavorite(document);

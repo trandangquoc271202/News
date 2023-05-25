@@ -1,8 +1,8 @@
 package com.example.news;
-
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,6 +47,7 @@ public class HomeActivity extends AppCompatActivity {
     public List<Item> ItemLists = new ArrayList<>();
     DatabaseFirebase db;
     Dialog dialog;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,9 +85,18 @@ public class HomeActivity extends AppCompatActivity {
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                db.addHistory(idUser,ItemLists.get(i));
+                CompletableFuture<Boolean> isExistfuture = db.checkExistHistory(idUser,ItemLists.get(i));
+                isExistfuture.thenAccept(isExist -> {
+                    if (isExist) {
+                    } else {
+                        db.addHistory(idUser,ItemLists.get(i));
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Thêm vào danh sách lịch sử thành công!", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 openLink(i);
             }
         });
