@@ -143,7 +143,7 @@
         android:id="@+id/tv_delete"
         android:layout_width="300dp"
         android:layout_height="60dp"
-        android:layout_marginStart="58dp"
+        android:layout_marginStart="55dp"
         android:layout_marginTop="520dp"
         android:background="@drawable/delete_user"
         android:gravity="center"
@@ -159,12 +159,13 @@
         android:id="@+id/delete"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="88dp"
+        android:layout_marginStart="83dp"
         android:layout_marginTop="525dp"
         android:background="@mipmap/deleteuser"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="50dp"
@@ -174,4 +175,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/news" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
