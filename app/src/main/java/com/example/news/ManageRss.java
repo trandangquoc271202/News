@@ -92,8 +92,8 @@ public class ManageRss extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 news = new News(document.getData().get("name").toString(), document.getData().get("link").toString(), document.getId());
                                 list.add(news);
-                                UpdateLV(list);
                             }
+                            UpdateLV(list);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }

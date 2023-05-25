@@ -49,6 +49,7 @@ public class NewsActivity extends AppCompatActivity {
     DatabaseFirebase db;
     View back;
     TextView tv_title;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,14 +80,11 @@ public class NewsActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                CompletableFuture<Boolean> isExistfuture = db.checkExistHistory(idUser,ItemLists.get(i));
+                CompletableFuture<Boolean> isExistfuture = db.checkExistHistory(idUser, ItemLists.get(i));
                 isExistfuture.thenAccept(isExist -> {
-                    if (isExist) {
-                        Toast.makeText(getApplicationContext(), "Đã tồn tại trong danh sách lịch sử!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        db.addHistory(idUser,ItemLists.get(i));
+                    if (!isExist) {
+                        db.addHistory(idUser, ItemLists.get(i));
                         dialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "Thêm vào danh sách lịch sử thành công!", Toast.LENGTH_SHORT).show();
                     }
                 });
                 openLink(i);
@@ -99,7 +97,7 @@ public class NewsActivity extends AppCompatActivity {
         });
     }
 
-    public void openDialogFavorite(Item item){
+    public void openDialogFavorite(Item item) {
         dialog = new Dialog(NewsActivity.this);
         dialog.setContentView(R.layout.dialog_add_favorite);
         Button button = dialog.findViewById(R.id.btn_add_favorite);
@@ -107,30 +105,29 @@ public class NewsActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                    CompletableFuture<Boolean> isExistFuture = db.checkExistFavorite(item, idUser);
-                    isExistFuture.thenAccept(isExist -> {
-                        if (isExist) {
-                            dialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Đã tồn tại trong danh sách yêu thích!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            db.addFavorite(item, idUser);
-                            dialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "Thêm vào danh sách yêu thích thành công!", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                CompletableFuture<Boolean> isExistFuture = db.checkExistFavorite(item, idUser);
+                isExistFuture.thenAccept(isExist -> {
+                    if (isExist) {
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Đã tồn tại trong danh sách yêu thích!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        db.addFavorite(item, idUser);
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Thêm vào danh sách yêu thích thành công!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         dialog.show();
     }
 
-    public void openLink(int i){
-        Toast.makeText(getApplicationContext(), "click", Toast.LENGTH_SHORT).show();
+    public void openLink(int i) {
         Intent intent = new Intent(NewsActivity.this, WebViewActivity.class);
         intent.putExtra("linknews", ItemLists.get(i).getLink());
         startActivity(intent);
     }
 
-    public void downloadNew(){
+    public void downloadNew() {
         new downloadXML(NewsActivity.this, lv).execute(link);
     }
 
@@ -139,6 +136,7 @@ public class NewsActivity extends AppCompatActivity {
         News_Adapter adapter;
         private ListView listView;
         private Context context;
+
         public downloadXML(Context context, ListView lv) {
             this.context = context;
             this.listView = lv;
@@ -147,21 +145,23 @@ public class NewsActivity extends AppCompatActivity {
         @Override
         protected List<Item> doInBackground(String... strings) {
             try {
-                ItemLists  =  loadURLfromNetWork(strings[0]);
+                ItemLists = loadURLfromNetWork(strings[0]);
                 return ItemLists;
-            }catch (Exception e){
+            } catch (Exception e) {
             }
             return null;
         }
+
         @Override
         protected void onPostExecute(List<Item> list) {
             super.onPostExecute(list);
             adapter = new News_Adapter(context, (ArrayList<Item>) list);
-            if (list != null){
+            if (list != null) {
                 listView.setAdapter(adapter);
             }
         }
-        private InputStream downloadURL(String url)throws IOException {
+
+        private InputStream downloadURL(String url) throws IOException {
             java.net.URL url1 = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
             conn.setReadTimeout(10000);
@@ -173,7 +173,8 @@ public class NewsActivity extends AppCompatActivity {
             //Log.i("00000", in.toString());
             return in;
         }
-        public List<Item> loadURLfromNetWork(String strUrl)throws Exception{
+
+        public List<Item> loadURLfromNetWork(String strUrl) throws Exception {
             InputStream stream = null;
             XmlPullParserHandler handler = new XmlPullParserHandler();
             ItemLists = null;
@@ -181,8 +182,8 @@ public class NewsActivity extends AppCompatActivity {
                 stream = downloadURL(strUrl);
                 Log.i("00000", stream.toString());
                 ItemLists = handler.Pasers(stream);
-            }finally {
-                if (stream != null){
+            } finally {
+                if (stream != null) {
                     stream.close();
                 }
             }
