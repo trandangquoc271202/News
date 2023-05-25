@@ -31,6 +31,12 @@ public class LogoActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                SQLiteDatabase database = openOrCreateDatabase("statelogin", MODE_PRIVATE, null);
+                String sql = "CREATE TABLE login (idUser TEXT,username TEXT,password TEXT)";
+                try {
+                    database.execSQL(sql);
+                } catch (Exception e) {
+                }
                 check();
             }
         }, 1000);
