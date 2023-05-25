@@ -41,22 +41,33 @@
         android:hint="Mật khẩu"
         android:layout_marginBottom="20dp"
         tools:ignore="MissingConstraints" />
+        <TextView
+            android:id="@+id/display"
+            android:textColor="#F40707"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            tools:ignore="MissingConstraints"/>
+
 
     <Button
         android:id="@+id/button_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_blue_bright"
+        android:background="#9ae1dd"
         android:text="Đăng nhập"
+        android:layout_marginTop="20dp"
         tools:ignore="MissingConstraints" />
         <Button
             android:id="@+id/button_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#80A33A"
+            android:background="#81F174"
             android:text="Đăng kí"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="20dp"
             tools:ignore="MissingConstraints" />
+
+
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
