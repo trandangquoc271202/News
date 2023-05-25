@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +27,7 @@ public class Login extends AppCompatActivity {
     private EditText Password;
     private Button LoginButton;
     private Button RegisterButton;
+    private TextView Display;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class Login extends AppCompatActivity {
         Password = findViewById(R.id.edit_text_password);
         LoginButton = findViewById(R.id.button_login);
         RegisterButton = findViewById(R.id.button_register);
+        Display = findViewById(R.id.display);
 
         LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,7 +46,12 @@ public class Login extends AppCompatActivity {
 
                 String username = Username.getText().toString();
                 String password = Password.getText().toString();
-                AccountExist(username, password);
+
+                if(username.isEmpty() || password.isEmpty()){
+                        Display.setText("Điền đầy đủ thông tin về tên đăng nhập hoặc mật khẩu!");
+                }else{
+                    AccountExist(username, password);
+                }
             }
         });
 //        Chuyển sang đăng kí
@@ -86,7 +94,7 @@ public class Login extends AppCompatActivity {
                                 finish();
                             }
                             if (!result) {
-
+                                Display.setText("Sai tên đăng nhập hoặc mật khẩu!");
                             }
                         }
                     }

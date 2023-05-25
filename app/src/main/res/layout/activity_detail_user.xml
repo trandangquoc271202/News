@@ -14,7 +14,7 @@
         android:id="@+id/view_save"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@mipmap/ic_save"
+        android:background="@mipmap/save"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="8dp" />
@@ -23,7 +23,7 @@
         android:id="@+id/view_delete"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@mipmap/ic_delete"
+        android:background="@mipmap/delete"
         app:layout_constraintEnd_toStartOf="@+id/view_edit"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="8dp" />
@@ -32,7 +32,7 @@
         android:id="@+id/view_edit"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@mipmap/ic_edit"
+        android:background="@mipmap/edit"
         app:layout_constraintEnd_toStartOf="@+id/view_save"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="8dp" />
@@ -51,11 +51,11 @@
 
     <Button
         android:id="@+id/bn_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="6dp"
-        android:text="Quay lại"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:background="@mipmap/back"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
