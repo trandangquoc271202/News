@@ -102,7 +102,8 @@ public class History extends AppCompatActivity {
         dialog.setContentView(R.layout.delete_all_favorite);
         Button button = dialog.findViewById(R.id.cancel);
         Button button2 = dialog.findViewById(R.id.confirm);
-
+        TextView text = dialog.findViewById(R.id.text);
+        text.setText("Bạn có chắc muốn xóa toàn bộ lịch sử không?");
         button2.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override

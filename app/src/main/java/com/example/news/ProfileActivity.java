@@ -70,13 +70,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        tv_update = findViewById(R.id.tv_update);
-        tv_update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                tv_update.setText("ok");
-            }
-        });
 
         tv_name = findViewById(R.id.tv_name);
         tv_email = findViewById(R.id.tv_email);

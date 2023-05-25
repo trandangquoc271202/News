@@ -3,7 +3,10 @@ package com.example.news;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,9 +25,11 @@ public class UpdateInfoActivity extends AppCompatActivity {
     View back;
     Button btn_update, btn_updatePass;
     String idUser;
-    TextView nofi, nofiname;
+    TextView nofi, nofiname, deleteuser;
     DatabaseFirebase databse;
+    Dialog dialog;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +74,44 @@ public class UpdateInfoActivity extends AppCompatActivity {
                 }
             }
         });
+        deleteuser = findViewById(R.id.tv_delete);
+        deleteuser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogConfirmDeleteUser();
+            }
+        });
+
         displayUser();
     }
+        public void dialogConfirmDeleteUser(){
+            dialog = new Dialog(UpdateInfoActivity.this);
+            dialog.setContentView(R.layout.dialog_delete_user);
 
+            Button cancel = dialog.findViewById(R.id.cancel);
+            Button delete = dialog.findViewById(R.id.delete);
+
+            cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                }
+            });
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    databse.deleteUser(idUser);
+                    SQLiteDatabase db = openOrCreateDatabase("statelogin", MODE_PRIVATE, null);
+                    db.delete("login", null, null);
+                    db.close();
+                    Intent intent = new Intent(UpdateInfoActivity.this, Login.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            dialog.show();
+        }
     public void displayUser() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         DocumentReference docRef = db.collection("users").document(idUser);

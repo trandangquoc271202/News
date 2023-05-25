@@ -51,7 +51,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#52a7a1"
-            android:text="Cập nhật" />
+            android:text="Cập nhật"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <TextView
@@ -107,7 +110,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#52a7a1"
-            android:text="Cập nhật" />
+            android:text="Cập nhật"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -128,10 +134,36 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="95dp"
-        android:textColor="#f44336"
         android:text=""
+        android:textColor="#f44336"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_delete"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="58dp"
+        android:layout_marginTop="520dp"
+        android:background="@drawable/delete_user"
+        android:gravity="center"
+        android:text="Xóa tài khoản"
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <View
+        android:id="@+id/delete"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="525dp"
+        android:background="@mipmap/deleteuser"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
