@@ -1,4 +1,7 @@
 package com.example.news;
+import static android.content.ContentValues.TAG;
+
+import androidx.annotation.NonNull;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +24,11 @@ import com.example.news.adapter.News_Adapter;
 import com.example.news.enity.Item;
 import com.example.news.firebase.DatabaseFirebase;
 import com.example.news.xmlpullparser.XmlPullParserHandler;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -103,11 +111,20 @@ public class HomeActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.dialog_add_favorite);
         Button button = dialog.findViewById(R.id.btn_add_favorite);
         button.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                db.addFavorite(item, idUser);
-                dialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Thêm vào danh sách yêu thích thành công!", Toast.LENGTH_SHORT).show();
+                CompletableFuture<Boolean> isExistFuture = db.checkExistFavorite(item, idUser);
+                isExistFuture.thenAccept(isExist -> {
+                    if (isExist) {
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Đã tồn tại trong danh sách yêu thích!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        db.addFavorite(item, idUser);
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Thêm vào danh sách yêu thích thành công!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         dialog.show();

@@ -3,6 +3,7 @@ package com.example.news;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -11,6 +12,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -41,11 +43,12 @@ public class ManageListFavorite extends AppCompatActivity {
     ListView lv_favourite;
     public List<Item> listFavorite;
     String link;
-    View back;
+    View back, deleteALl;
     Dialog dialog;
     ManageListFavoriteAdapter adapter;
     DatabaseFirebase db;
     String idUser;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,7 @@ public class ManageListFavorite extends AppCompatActivity {
         idUser = bundle.getString("idUser");
         lv_favourite = findViewById(R.id.lv_favorite);
         back = findViewById(R.id.back);
+        deleteALl = findViewById(R.id.delete_all);
         db = new DatabaseFirebase();
         loadAllFavourite();
         updateLV();
@@ -70,6 +74,13 @@ public class ManageListFavorite extends AppCompatActivity {
             downloadNew();
         }
 
+        deleteALl.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteAllDialogFavorite();
+            }
+        }));
+
         lv_favourite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -80,6 +91,50 @@ public class ManageListFavorite extends AppCompatActivity {
             deleteDialogFavorite(listFavorite.get(i).getId());
             return true;
         });
+    }
+
+    private void deleteAllDialogFavorite() {
+        dialog = new Dialog(ManageListFavorite.this);
+        dialog.setContentView(R.layout.delete_all_favorite);
+        Button cancel = dialog.findViewById(R.id.cancel);
+        Button confirm = dialog.findViewById(R.id.confirm);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+        confirm.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                db.deleteAllFavorite(idUser);
+                listFavorite = new ArrayList<>();
+                adapter = new ManageListFavoriteAdapter(getApplicationContext(), ManageListFavorite.this, listFavorite);
+                lv_favourite.setAdapter(adapter);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private void deleteDialogFavorite(String document) {
+        dialog = new Dialog(ManageListFavorite.this);
+        dialog.setContentView(R.layout.dialog_del_favorite);
+        Button button = dialog.findViewById(R.id.btn_del_favorite);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                db.deleteFavorite(document);
+                updateLV();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     public void loadAllFavourite() {
@@ -95,8 +150,8 @@ public class ManageListFavorite extends AppCompatActivity {
                         item = new Item(document.getId() ,document.getData().get("title").toString(),document.getData().get("link").toString(),
                                 document.getData().get("date").toString(),document.getData().get("linkImg").toString());
                         list.add(item);
-                        updateLV(list);
                     }
+                    updateLV(list);
                 } else {
                     Log.w(TAG, "Error getting documents.", task.getException());
                 }
@@ -114,21 +169,6 @@ public class ManageListFavorite extends AppCompatActivity {
         listFavorite = list;
         adapter = new ManageListFavoriteAdapter(getApplicationContext(), ManageListFavorite.this, listFavorite);
         lv_favourite.setAdapter(adapter);
-    }
-    private void deleteDialogFavorite(String item) {
-        dialog = new Dialog(ManageListFavorite.this);
-        dialog.setContentView(R.layout.dialog_del_favorite);
-        Button button = dialog.findViewById(R.id.btn_del_favorite);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                db.deleteFavorite(item);
-                updateLV();
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
     }
 
     public void openLink(int i){

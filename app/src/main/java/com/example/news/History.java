@@ -37,7 +37,7 @@ public class History extends AppCompatActivity {
     String idUser;
     Dialog dialog;
     View back;
-    View deleteAllHistory;
+    View deleteALl;
     DatabaseFirebase database;
     public ArrayList<Item> ItemLists = new ArrayList<Item>();
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -51,16 +51,14 @@ public class History extends AppCompatActivity {
         database = new DatabaseFirebase();
         loadAllHistory();
         UpdateLV();
+
         listView = (ListView) findViewById(R.id.lv_news);
 
         listView.setOnItemLongClickListener((adapterView, view, i, l) -> {
             deleteDialogHistory(ItemLists.get(i).getId());
             return true;
         });
-        listView.setOnItemLongClickListener((adapterView, view, i, l) -> {
-            deleteAllDialogHistory(ItemLists.get(i).getId());
-            return true;
-        });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -74,7 +72,13 @@ public class History extends AppCompatActivity {
                 finish();
             }
         });
-
+        deleteALl = findViewById(R.id.delete_all);
+        deleteALl.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteAllDialogHistory();
+            }
+        }));
     }
 
     private void deleteDialogHistory(String item) {
@@ -93,17 +97,28 @@ public class History extends AppCompatActivity {
         });
         dialog.show();
     }
-    private void deleteAllDialogHistory(String item) {
+    private void deleteAllDialogHistory() {
         dialog = new Dialog(History.this);
-        dialog.setContentView(R.layout.dialog_del_favorite);
-        Button button = dialog.findViewById(R.id.btn_del_favorite);
+        dialog.setContentView(R.layout.delete_all_favorite);
+        Button button = dialog.findViewById(R.id.cancel);
+        Button button2 = dialog.findViewById(R.id.confirm);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        button2.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 database.deleteAllHistory(idUser);
-                UpdateLV();
+                ItemLists = new ArrayList<Item>();
+                ListDatabaseAdapter listdata = new ListDatabaseAdapter(ItemLists);
+                listView.setAdapter(listdata);
+//                UpdateLV();
+                dialog.dismiss();
+            }
+        });
+        button.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
                 dialog.dismiss();
             }
         });

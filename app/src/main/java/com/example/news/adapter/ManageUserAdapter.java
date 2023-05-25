@@ -41,10 +41,8 @@ public class ManageUserAdapter extends ArrayAdapter<User> {
         }
         final User item = list.get(position);
         if (v != null){
-            tv_name = v.findViewById(R.id.tv_name);
             tv_username = v.findViewById(R.id.tv_username);
             v_del = v.findViewById(R.id.v_del);
-            tv_name.setText(item.getName());
             tv_username.setText(item.getUsername());
         }
 

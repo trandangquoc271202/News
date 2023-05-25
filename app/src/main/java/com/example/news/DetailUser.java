@@ -62,6 +62,7 @@ public class DetailUser extends AppCompatActivity implements View.OnClickListene
         text_username = findViewById(R.id.text_username);
         text_username.setEnabled(false);
         text_username.setClickable(false);
+        text_username.setFocusable(false);
 
         text_role = findViewById(R.id.text_role);
         text_role.setEnabled(false);
@@ -218,9 +219,6 @@ public class DetailUser extends AppCompatActivity implements View.OnClickListene
     private void active_edit() {
         text_name.setEnabled(true);
         text_name.setClickable(true);
-
-        text_username.setEnabled(true);
-        text_username.setClickable(true);
 
         text_role.setEnabled(true);
         text_role.setClickable(true);
