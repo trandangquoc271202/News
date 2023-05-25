@@ -47,7 +47,7 @@
         android:layout_width="280dp"
         android:layout_height="50dp"
         android:layout_marginTop="20dp"
-        android:hint="Tên người dùng"
+        android:hint="Nhập username"
         app:layout_constraintEnd_toStartOf="@id/search"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"

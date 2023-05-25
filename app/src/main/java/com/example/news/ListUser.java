@@ -146,7 +146,7 @@ public class ListUser extends AppCompatActivity implements View.OnClickListener 
         int size = lv_main.getAdapter().getCount();
         for(int i=0;i<size;i++){
             User user = (User)lv_main.getAdapter().getItem(i);
-            if(user.getName().toLowerCase().contains(text)){
+            if(user.getUsername().toLowerCase().contains(text)){
                 list.add(user);
             }
         }
