@@ -1,5 +1,6 @@
 package com.example.news;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +30,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class NewsActivity extends AppCompatActivity {
     ListView lv;
@@ -38,6 +41,7 @@ public class NewsActivity extends AppCompatActivity {
     DatabaseFirebase db;
     View back;
     TextView tv_title;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +68,19 @@ public class NewsActivity extends AppCompatActivity {
         downloadNew();
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                db.addHistory(idUser,ItemLists.get(i));
+                CompletableFuture<Boolean> isExistfuture = db.checkExistHistory(idUser,ItemLists.get(i));
+                isExistfuture.thenAccept(isExist -> {
+                    if (isExist) {
+                        Toast.makeText(getApplicationContext(), "Đã tồn tại trong danh sách lịch sử!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        db.addHistory(idUser,ItemLists.get(i));
+                        dialog.dismiss();
+                        Toast.makeText(getApplicationContext(), "Thêm vào danh sách lịch sử thành công!", Toast.LENGTH_SHORT).show();
+                    }
+                });
                 openLink(i);
             }
         });
@@ -82,6 +96,7 @@ public class NewsActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.dialog_add_favorite);
         Button button = dialog.findViewById(R.id.btn_add_favorite);
         button.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                     db.addFavorite(item, idUser);

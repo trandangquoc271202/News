@@ -3,10 +3,12 @@ package com.example.news;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,8 +37,10 @@ public class History extends AppCompatActivity {
     String idUser;
     Dialog dialog;
     View back;
+    View deleteAllHistory;
     DatabaseFirebase database;
     public ArrayList<Item> ItemLists = new ArrayList<Item>();
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,15 +49,18 @@ public class History extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra("data");
         idUser = bundle.getString("idUser");
         database = new DatabaseFirebase();
-        loadAllFavourite();
+        loadAllHistory();
         UpdateLV();
         listView = (ListView) findViewById(R.id.lv_news);
 
         listView.setOnItemLongClickListener((adapterView, view, i, l) -> {
-            deleteDialogFavorite(ItemLists.get(i).getId());
+            deleteDialogHistory(ItemLists.get(i).getId());
             return true;
         });
-
+        listView.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            deleteAllDialogHistory(ItemLists.get(i).getId());
+            return true;
+        });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -67,17 +74,35 @@ public class History extends AppCompatActivity {
                 finish();
             }
         });
+
     }
 
-    private void deleteDialogFavorite(String item) {
+    private void deleteDialogHistory(String item) {
         dialog = new Dialog(History.this);
         dialog.setContentView(R.layout.dialog_del_favorite);
         Button button = dialog.findViewById(R.id.btn_del_favorite);
 
         button.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 database.deleteHistory(item);
+                UpdateLV();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+    private void deleteAllDialogHistory(String item) {
+        dialog = new Dialog(History.this);
+        dialog.setContentView(R.layout.dialog_del_favorite);
+        Button button = dialog.findViewById(R.id.btn_del_favorite);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                database.deleteAllHistory(idUser);
                 UpdateLV();
                 dialog.dismiss();
             }
@@ -89,7 +114,7 @@ public class History extends AppCompatActivity {
         intent.putExtra("linknews", ItemLists.get(i).getLink());
         startActivity(intent);
     }
-    public void loadAllFavourite() {
+    public void loadAllHistory() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("history").whereEqualTo("idUser", idUser)
@@ -114,7 +139,7 @@ public class History extends AppCompatActivity {
 
     public void UpdateLV() {
         ItemLists = new ArrayList<Item>();
-        loadAllFavourite();
+        loadAllHistory();
     }
 
     public void UpdateLV(ArrayList<Item> listRss) {
