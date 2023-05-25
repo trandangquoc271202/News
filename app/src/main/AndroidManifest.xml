@@ -38,9 +38,6 @@
             android:name=".UpdateInfoActivity"
             android:exported="false" />
         <activity
-            android:name=".CategoryActivity"
-            android:exported="false" />
-        <activity
             android:name=".HomeActivity"
             android:exported="true" />
         <activity
@@ -66,9 +63,6 @@
             android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
-        <activity
-            android:name=".HistoryActivity"
-            android:exported="true" />
         <activity
             android:name=".ManageListFavorite"
             android:exported="true" />

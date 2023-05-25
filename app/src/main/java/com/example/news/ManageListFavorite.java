@@ -19,11 +19,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.news.adapter.ManageListFavoriteAdapter;
 import com.example.news.adapter.News_Adapter;
-import com.example.news.enity.Item;
+import com.example.news.model.Item;
 import com.example.news.firebase.DatabaseFirebase;
 import com.example.news.xmlpullparser.XmlPullParserHandler;
 import com.google.android.gms.tasks.OnCompleteListener;

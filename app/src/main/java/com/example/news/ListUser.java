@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.news.adapter.ManageUserAdapter;
-import com.example.news.enity.User;
+import com.example.news.model.User;
 import com.example.news.firebase.DatabaseFirebase;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;

@@ -20,7 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.news.enity.User;
+import com.example.news.model.User;
 import com.example.news.firebase.DatabaseFirebase;
 
 
