@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,39 +27,50 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
+    String idUser;
+    View user;
+    TextView tv_category;
+
     ListView lv;
     public List<Item> ItemLists = new ArrayList<>();
-    String link, title;
-    String idUser;
-    Dialog dialog;
     DatabaseFirebase db;
-    View back;
-    TextView tv_title;
+    Dialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news);
-        lv = findViewById(R.id.lv_news);
+        setContentView(R.layout.activity_home);
+
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("data");
         idUser = bundle.getString("idUser");
-        link = bundle.getString("link");
-        title = bundle.getString("title");
 
-        tv_title = findViewById(R.id.tv_title);
-        tv_title.setText(title);
-        db = new DatabaseFirebase();
-
-        back = findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
+        user = findViewById(R.id.user);
+        user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("idUser", idUser);
+                intent.putExtra("data" ,bundle);
+                startActivity(intent);
             }
         });
-
+        tv_category = findViewById(R.id.tv_category);
+        tv_category.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("idUser", idUser);
+                intent.putExtra("data" ,bundle);
+                startActivity(intent);
+            }
+        });
         downloadNew();
+        db = new DatabaseFirebase();
+        lv = findViewById(R.id.lv_news);
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -76,31 +85,29 @@ public class NewsActivity extends AppCompatActivity {
             return true;
         });
     }
-
     public void openDialogFavorite(Item item){
-        dialog = new Dialog(NewsActivity.this);
+        dialog = new Dialog(HomeActivity.this);
         dialog.setContentView(R.layout.dialog_add_favorite);
         Button button = dialog.findViewById(R.id.btn_add_favorite);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    db.addFavorite(item, idUser);
-                    dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "Thêm vào danh sách yêu thích thành công!", Toast.LENGTH_SHORT).show();
+                db.addFavorite(item, idUser);
+                dialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Thêm vào danh sách yêu thích thành công!", Toast.LENGTH_SHORT).show();
             }
         });
         dialog.show();
     }
 
     public void openLink(int i){
-        Toast.makeText(getApplicationContext(), "click", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(NewsActivity.this, WebViewActivity.class);
+        Intent intent = new Intent(HomeActivity.this, WebViewActivity.class);
         intent.putExtra("linknews", ItemLists.get(i).getLink());
         startActivity(intent);
     }
 
     public void downloadNew(){
-        new downloadXML(NewsActivity.this, lv).execute(link);
+        new HomeActivity.downloadXML(HomeActivity.this, lv).execute("https://vtv.vn/trong-nuoc.rss");
     }
 
     public class downloadXML extends AsyncTask<String, Void, List<Item>> {
@@ -110,7 +117,7 @@ public class NewsActivity extends AppCompatActivity {
         private Context context;
         public downloadXML(Context context, ListView lv) {
             this.context = context;
-            this.listView = lv;
+            this.listView = findViewById(R.id.lv_news);
         }
 
         @Override

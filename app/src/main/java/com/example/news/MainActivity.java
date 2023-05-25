@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,50 +36,35 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     ListView lv_main;
-    View view_add, view_add_favorite;
-    Dialog dialog;
-    TextInputEditText ed_name, ed_link;
-    Button btn_add, btn_del, btn_cancel;
     NewsAdapter adapter;
-    NewsDAO dao;
-    News news;
     ArrayList<News> list;
-
+    TextView tv_home;
+    View user;
+    String idUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lv_main = findViewById(R.id.lv_main);
-        view_add = findViewById(R.id.view_add);
-        view_add_favorite = findViewById(R.id.view_list_favorite);
 
-        dao = new NewsDAO(MainActivity.this);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("data");
+        idUser = bundle.getString("idUser");
+
         UpdateLV();
-
-        deleteCache(getApplicationContext()); //xóa cache
-        view_add_favorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, ManageListFavorite.class);
-                startActivity(intent);
-            }
-        });
-        view_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Toast.makeText(getApplicationContext(), "Click", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, ManageRss.class);
-                startActivity(intent);
-            }
-        });
         lv_main.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 if (checkNetwork()) {
                     String link = list.get(i).getLink();
+                    String title = list.get(i).getName();
                     if (!link.isEmpty()) {
                         Intent intent = new Intent(MainActivity.this, NewsActivity.class);
-                        intent.putExtra("link", link);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("idUser", idUser);
+                        bundle.putString("link", link);
+                        bundle.putString("title", title);
+                        intent.putExtra("data" ,bundle);
                         startActivity(intent);
                     }
                 } else {
@@ -87,38 +73,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    public void openDialog() {
-        dialog = new Dialog(MainActivity.this);
-        dialog.setContentView(R.layout.dialog_add);
-        ed_name = dialog.findViewById(R.id.ed_name);
-        ed_link = dialog.findViewById(R.id.ed_link);
-        btn_add = dialog.findViewById(R.id.btn_add);
-        btn_add.setOnClickListener(new View.OnClickListener() {
+        tv_home = findViewById(R.id.tv_home);
+        tv_home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String name = ed_name.getText().toString().trim();
-                String link = ed_link.getText().toString().trim();
-                if (name.isEmpty() || link.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
-                } else {
-                    News news = new News();
-                    news.setName(name);
-                    news.setLink(link);
-                    if (dao.insert(news)) {
-                        Toast.makeText(getApplicationContext(), "thêm thành công", Toast.LENGTH_SHORT).show();
-                        UpdateLV();
-                        dialog.dismiss();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "lỗi", Toast.LENGTH_SHORT).show();
-                    }
-                }
+                finish();
             }
         });
-        dialog.show();
-    }
 
+        user = findViewById(R.id.user);
+        user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("idUser", idUser);
+                intent.putExtra("data" ,bundle);
+                startActivity(intent);
+            }
+        });
+    }
     public void NoInternetToast() {
         LayoutInflater inflater = getLayoutInflater();
         View v = inflater.inflate(R.layout.no_internet_toast, null);
@@ -143,32 +117,6 @@ public class MainActivity extends AppCompatActivity {
         return wifiAvailable || mobileAvailable;
     }
 
-    public void delete(String id) {
-        dialog = new Dialog(MainActivity.this);
-        dialog.setContentView(R.layout.dialog_del);
-        btn_cancel = dialog.findViewById(R.id.btn_cancel);
-        btn_del = dialog.findViewById(R.id.btn_del);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        btn_del.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (dao.delete(id)) {
-                    Toast.makeText(getApplicationContext(), "xóa thành công", Toast.LENGTH_SHORT).show();
-                    UpdateLV();
-                } else {
-                    Toast.makeText(getApplicationContext(), "lỗi", Toast.LENGTH_SHORT).show();
-                }
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-        UpdateLV();
-    }
     public void loadAllRss(){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 

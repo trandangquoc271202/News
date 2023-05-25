@@ -17,35 +17,67 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/news2"
+        android:icon="@mipmap/news"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/news2"
+        android:roundIcon="@mipmap/news"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity
-            android:name=".ManageListFavorite"
+            android:name=".History"
             android:exported="false" />
         <activity
-            android:name=".ManageRss"
-            android:exported="true"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"></activity>
-        <activity
-            android:name=".WebViewActivity"
-            android:exported="true" />
-        <activity
-            android:name=".NewsActivity"
-            android:exported="true"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"></activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge">
+            android:name=".LogoActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".UpdateInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="true" />
+        <activity
+            android:name=".DetailUser"
+            android:exported="false" />
+        <activity
+            android:name=".ListUser"
+            android:exported="true" />
+        <activity
+            android:name=".ManageRss"
+            android:exported="true"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
+        <activity
+            android:name=".WebViewActivity"
+            android:exported="true" />
+        <activity
+            android:name=".NewsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ManageListFavorite"
+            android:exported="true" />
+        <activity
+            android:name=".Login"
+            android:exported="true"></activity>
+        <activity
+            android:name=".RegisterAccount"
+            android:exported="true" />
     </application>
 
 </manifest>

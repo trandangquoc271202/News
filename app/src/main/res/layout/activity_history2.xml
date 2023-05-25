@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewsActivity">
+    tools:context=".History">
 
     <TextView
         android:id="@+id/textView2"
@@ -16,7 +16,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp" />
-
     <ListView
         android:id="@+id/lv_news"
         android:layout_width="395dp"
@@ -28,7 +27,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
-
     <View
         android:id="@+id/back"
         android:layout_width="50dp"
@@ -45,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
         android:layout_marginTop="30dp"
-        android:text=""
+        android:text="Lịch sử tin đã xem"
         android:textColor="@color/white"
         android:textSize="25dp"
         android:textStyle="bold"
