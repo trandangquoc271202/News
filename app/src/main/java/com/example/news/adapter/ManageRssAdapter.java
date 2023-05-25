@@ -10,11 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.news.MainActivity;
 import com.example.news.ManageRss;
 import com.example.news.R;
-import com.example.news.dao.NewsDAO;
-import com.example.news.enity.News;
+import com.example.news.model.News;
 
 import java.util.ArrayList;
 
@@ -22,7 +20,6 @@ public class ManageRssAdapter extends ArrayAdapter<News> {
     Context context;
     TextView tv_name;
     ArrayList<News> list;
-    NewsDAO dao;
     View v_del;
     ManageRss main;
     public ManageRssAdapter(@NonNull Context context, ManageRss activity, ArrayList<News> list) {

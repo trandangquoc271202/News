@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProfileActivity">
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
@@ -54,12 +55,12 @@
         android:layout_height="60dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="450dp"
+        android:background="@drawable/radius"
         android:gravity="center"
         android:text="Cập nhật"
         android:textColor="@color/white"
         android:textSize="22dp"
         android:textStyle="bold"
-        android:background="@drawable/radius"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
@@ -176,8 +177,8 @@
         android:layout_height="50dp"
         android:layout_marginTop="119dp"
         android:background="@drawable/radius_white"
-        android:text=""
         android:gravity="center"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="22dp"
         android:textStyle="bold"
@@ -192,8 +193,8 @@
         android:layout_height="50dp"
         android:layout_marginTop="200dp"
         android:background="@drawable/radius_white"
-        android:text=""
         android:gravity="center"
+        android:text=""
         android:textColor="@color/black"
         android:textSize="22dp"
         android:textStyle="bold"
@@ -201,4 +202,16 @@
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="25dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/news" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

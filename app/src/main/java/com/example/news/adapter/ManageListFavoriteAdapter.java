@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.example.news.ManageListFavorite;
 import com.example.news.R;
-import com.example.news.enity.Item;
+import com.example.news.model.Item;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
