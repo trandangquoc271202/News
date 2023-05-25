@@ -109,8 +109,6 @@ public class DatabaseFirebase {
         db.collection("history").add(rss);
 
     }
-/*xoá toàn bộ lịch sử
- */
     public void deleteAllHistory(String idUser) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("history").whereEqualTo("idUser", idUser).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
