@@ -41,7 +41,7 @@ public class ManageListFavorite extends AppCompatActivity {
     ListView lv_favourite;
     public List<Item> listFavorite;
     String link;
-    Button btn_back;
+    View back;
     Dialog dialog;
     ManageListFavoriteAdapter adapter;
     DatabaseFirebase db;
@@ -55,11 +55,11 @@ public class ManageListFavorite extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra("data");
         idUser = bundle.getString("idUser");
         lv_favourite = findViewById(R.id.lv_favorite);
-        btn_back = (Button) findViewById(R.id.btn_back);
+        back = findViewById(R.id.back);
         db = new DatabaseFirebase();
         loadAllFavourite();
         updateLV();
-        btn_back.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
