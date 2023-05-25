@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Bạn có chắc muốn xóa toàn bộ danh sách yêu thích không?"
+        android:textColor="@color/black"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="Đồng ý"
+        app:layout_constraintTop_toBottomOf="@+id/text"
+        tools:layout_editor_absoluteX="67dp"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:text="Hủy bỏ"
+        app:layout_constraintRight_toLeftOf="@id/confirm"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/radius"
+        android:backgroundTint="#8388a4"
+        android:textAllCaps="false"
+        android:textSize="18dp"
+        app:layout_constraintTop_toBottomOf="@+id/text" />
+
+    <Button
+        android:id="@+id/confirm"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:text="Đòng ý"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/cancel"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/radius"
+        android:textColor="@color/white"
+        android:backgroundTint="#4CAF50"
+        android:textAllCaps="false"
+        android:textSize="18dp"
+        app:layout_constraintTop_toBottomOf="@+id/text" />
+</androidx.constraintlayout.widget.ConstraintLayout>
