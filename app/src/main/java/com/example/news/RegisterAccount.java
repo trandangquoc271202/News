@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.news.enity.News;
@@ -30,9 +31,12 @@ public class RegisterAccount extends AppCompatActivity {
     private EditText Email;
     private EditText Password;
     private EditText ConfirmPassword;
+
+    private TextView Display;
     private Button RegisterButton, button_login;
 
     DatabaseFirebase database;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,7 @@ public class RegisterAccount extends AppCompatActivity {
         Email = findViewById(R.id.edit_text_email);
         Password = findViewById(R.id.edit_text_password);
         ConfirmPassword = findViewById(R.id.edit_text_confirm_password);
+        Display = findViewById(R.id.display);
         button_login = findViewById(R.id.button_login);
         RegisterButton = findViewById(R.id.button_register);
         RegisterButton.setOnClickListener(new View.OnClickListener() {
@@ -54,13 +59,30 @@ public class RegisterAccount extends AppCompatActivity {
                 String confirmPassword = ConfirmPassword.getText().toString();
 
 //                kiểm tra thông tin đăng kí
-                if(validateRegister(username, email, password, confirmPassword)) {
-                    // Thực hiện đăng kí
-                    AccountExist(username,email, password );
-                }else{
-                    // Hiển thị thông báo lỗi nếu nhập sai thông tin đăng kí
-                    Toast.makeText(RegisterAccount.this, "Thông tin nhập vào không hợp lệ", Toast.LENGTH_SHORT).show();
+//                if (!username.isEmpty() && !email.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty()) {
+//                    // Thực hiện đăng kí
+//                    AccountExist(username, email, password);
+//                } else {
+//                    if (username.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+//                        Display.setText("Yêu cầu nhập đầy đủ thông tin!");
+//                    }
+//
+//                }
+//                if (!password.equals(confirmPassword)) {
+//                    Display.setText("Mật khẩu không trùng khớp!");
+//                }
+                if (!username.isEmpty() && !email.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty()) {
+                    if (!password.equals(confirmPassword)) {
+                        Display.setText("Mật khẩu không trùng khớp!");
+                    } else {
+                        AccountExist(username, email, password);
+                    }
+
+                } else {
+                    Display.setText("Yêu cầu nhập đầy đủ thông tin!");
                 }
+
+
             }
         });
         button_login.setOnClickListener(new View.OnClickListener() {
@@ -69,60 +91,39 @@ public class RegisterAccount extends AppCompatActivity {
                 finish();
             }
         });
-}
-
-
-// Kiểm tra rỗng
-    private boolean validateRegister(String username, String email, String password, String confirmPassword) {
-        if (TextUtils.isEmpty(username)) {
-            return false;
-        }
-        if (TextUtils.isEmpty(email)) {
-            return false;
-        }
-        if (TextUtils.isEmpty(password) || password.length() < 6) {
-            return false;
-        }
-        if (!password.equals(confirmPassword)) {
-            return false;
-        }
-        return true;
     }
-//    Kiểm tra tồn tại
-    private void AccountExist(String username, String email, String pass){
+
+    //    Kiểm tra tồn tại
+    private void AccountExist(String username, String email, String pass) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users")
                 .get()
-                  .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
-                      @Override
-                      public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                          if (task.isSuccessful()) {
-                              boolean result =false;
-                              for (QueryDocumentSnapshot document : task.getResult()) {
-                                  if(document.getData().get("username").toString().equals(username) ||document.getData().get("email").toString().equals(email) ){
-                                      result = true;
-                                      break;
-                                  }
-                              }
-                              if(result){
-                                  result(true);
-                              }
-                              if(!result){
-                                  database.saveAccount(username, pass, email);
-                                  Intent intent = new Intent(RegisterAccount.this, Login.class);
-                                  startActivity(intent);
-                                  finish();
-                              }
-                          }
-                      }
-                  });
-
-    }
-    public void result(boolean result){
+                        if (task.isSuccessful()) {
+                            boolean result = false;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.getData().get("username").toString().equals(username) || document.getData().get("email").toString().equals(email)) {
+                                    result = true;
+                                    break;
+                                }
+                            }
+                            if (result) {
+                                Display.setText("Tên đăng nhập hoặc email đã tồn tại!");
+                            }else{
+                                if (!result) {
+                                    database.saveAccount(username, pass, email);
+                                    Intent intent = new Intent(RegisterAccount.this, Login.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        }
+                    }
+                });
 
     }
-
-
 }
