@@ -2,6 +2,7 @@ package com.example.news;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +35,7 @@ public class DetailActivity extends AppCompatActivity {
     ListView lv_news;
     View back, detail;
     String link;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +43,8 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         link = intent.getStringExtra("linknews");
+
+
         back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +64,14 @@ public class DetailActivity extends AppCompatActivity {
         DetailActivity.ListDatabaseAdapter listdata = new DetailActivity.ListDatabaseAdapter(list);
         lv_news.setAdapter(listdata);
         title = findViewById(R.id.title);
+        Handler handlerImageAvatar = new Handler(Looper.getMainLooper()) {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                String result = (String) msg.obj;
+
+            }
+        };
         Handler handlerDetail = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(Message msg) {
@@ -73,7 +85,6 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                // xử lý kết quả ở đây
                 String result = (String) msg.obj;
                 title.setText(result);
             }
@@ -86,6 +97,16 @@ public class DetailActivity extends AppCompatActivity {
                 try {
                     String url = link;
                     Document doc = Jsoup.connect(url).get();
+
+                    Element firstImage = doc.select("img.news-avatar").first();
+
+                    try{
+                        String src = firstImage.attr("src");
+
+                    }catch (Exception e){
+
+                    }
+
                     Element h1 = doc.select("h1").first();
                     String title = h1.text();
 
