@@ -23,6 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity
+            android:name=".DetailActivity"
+            android:exported="true" >
+
+        </activity>
+        <activity
             android:name=".History"
             android:exported="false" />
         <activity
@@ -68,7 +73,7 @@
             android:exported="true" />
         <activity
             android:name=".Login"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".RegisterAccount"
             android:exported="true" />
