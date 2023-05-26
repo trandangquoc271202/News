@@ -112,7 +112,7 @@ public class NewsActivity extends AppCompatActivity {
     }
 
     public void openLink(int i) {
-        Intent intent = new Intent(NewsActivity.this, WebViewActivity.class);
+        Intent intent = new Intent(NewsActivity.this, DetailActivity.class);
         intent.putExtra("linknews", ItemLists.get(i).getLink());
         startActivity(intent);
     }
