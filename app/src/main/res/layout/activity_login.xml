@@ -67,7 +67,13 @@
             android:layout_marginTop="20dp"
             tools:ignore="MissingConstraints" />
 
-
-
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="match_parent"
+            android:layout_marginTop="50dp"
+            android:layout_height="200dp"
+            app:srcCompat="@mipmap/news"
+            tools:ignore="MissingConstraints" />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

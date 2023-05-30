@@ -1,4 +1,4 @@
-package com.example.news.enity;
+package com.example.news.model;
 
 public class Item {
     private String title, link, date, linkImg,id;

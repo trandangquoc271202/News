@@ -3,7 +3,7 @@ package com.example.news.xmlpullparser;
 import android.util.Log;
 import android.util.Xml;
 
-import com.example.news.enity.Item;
+import com.example.news.model.Item;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;

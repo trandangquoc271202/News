@@ -6,15 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.news.MainActivity;
 import com.example.news.R;
-import com.example.news.dao.NewsDAO;
-import com.example.news.enity.News;
+import com.example.news.model.News;
 
 import java.util.ArrayList;
 
@@ -22,7 +20,6 @@ public class NewsAdapter extends ArrayAdapter<News> {
     Context context;
     TextView tv_name;
     ArrayList<News> list;
-    NewsDAO dao;
     View v_del;
     MainActivity main;
 

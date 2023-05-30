@@ -3,6 +3,7 @@ package com.example.news;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -11,17 +12,17 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.news.adapter.ManageListFavoriteAdapter;
 import com.example.news.adapter.News_Adapter;
-import com.example.news.enity.Item;
+import com.example.news.model.Item;
 import com.example.news.firebase.DatabaseFirebase;
 import com.example.news.xmlpullparser.XmlPullParserHandler;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,6 +37,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class ManageListFavorite extends AppCompatActivity {
     ListView lv_favourite;
@@ -46,6 +48,7 @@ public class ManageListFavorite extends AppCompatActivity {
     ManageListFavoriteAdapter adapter;
     DatabaseFirebase db;
     String idUser;
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +84,13 @@ public class ManageListFavorite extends AppCompatActivity {
         lv_favourite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                CompletableFuture<Boolean> isExistfuture = db.checkExistHistory(idUser, listFavorite.get(i));
+                isExistfuture.thenAccept(isExist -> {
+                    if (!isExist) {
+                        db.addHistory(idUser, listFavorite.get(i));
+                        dialog.dismiss();
+                    }
+                });
                 openLink(i);
             }
         });
@@ -104,6 +114,7 @@ public class ManageListFavorite extends AppCompatActivity {
         });
 
         confirm.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 db.deleteAllFavorite(idUser);
@@ -122,6 +133,7 @@ public class ManageListFavorite extends AppCompatActivity {
         Button button = dialog.findViewById(R.id.btn_del_favorite);
 
         button.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 db.deleteFavorite(document);

@@ -23,6 +23,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity
+            android:name=".DetailActivity"
+            android:exported="true" >
+
+        </activity>
+        <activity
             android:name=".History"
             android:exported="false" />
         <activity
@@ -36,9 +41,6 @@
         </activity>
         <activity
             android:name=".UpdateInfoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".CategoryActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
@@ -67,14 +69,11 @@
             android:exported="true"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge" />
         <activity
-            android:name=".HistoryActivity"
-            android:exported="true" />
-        <activity
             android:name=".ManageListFavorite"
             android:exported="true" />
         <activity
             android:name=".Login"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity
             android:name=".RegisterAccount"
             android:exported="true" />

@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.example.news.ListUser;
 import com.example.news.R;
-import com.example.news.enity.User;
+import com.example.news.model.User;
 
 import java.util.ArrayList;
 

@@ -8,12 +8,8 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewStub;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.news.enity.News;
-import com.example.news.enity.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentReference;
@@ -70,13 +66,6 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        tv_update = findViewById(R.id.tv_update);
-        tv_update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                tv_update.setText("ok");
-            }
-        });
 
         tv_name = findViewById(R.id.tv_name);
         tv_email = findViewById(R.id.tv_email);
