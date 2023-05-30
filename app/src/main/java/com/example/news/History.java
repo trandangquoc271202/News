@@ -125,8 +125,9 @@ public class History extends AppCompatActivity {
         dialog.show();
     }
     public void openLink(int i){
-        Intent intent = new Intent(History.this, WebViewActivity.class);
+        Intent intent = new Intent(History.this, DetailActivity.class);
         intent.putExtra("linknews", ItemLists.get(i).getLink());
+        intent.putExtra("idUser", idUser);
         startActivity(intent);
     }
     public void loadAllHistory() {

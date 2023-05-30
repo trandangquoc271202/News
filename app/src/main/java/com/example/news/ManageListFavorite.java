@@ -179,8 +179,9 @@ public class ManageListFavorite extends AppCompatActivity {
     }
 
     public void openLink(int i){
-        Intent intent = new Intent(ManageListFavorite.this, WebViewActivity.class);
+        Intent intent = new Intent(ManageListFavorite.this, DetailActivity.class);
         intent.putExtra("linknews", listFavorite.get(i).getLink());
+        intent.putExtra("idUser", idUser);
         startActivity(intent);
     }
 
