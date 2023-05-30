@@ -252,4 +252,9 @@ public class DatabaseFirebase {
         rss.put("content", content);
         db.collection("comments").add(rss);
     }
+    public void deleteComment(String document) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("comments").document(document);
+        docRef.delete();
+    }
 }

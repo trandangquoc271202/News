@@ -65,7 +65,13 @@ public class CommentActivity extends AppCompatActivity {
                 }
             }
         });
-
+        back = findViewById(R.id.back);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         UpdateLV();
     }
     public void loadAllComment() {
@@ -80,8 +86,9 @@ public class CommentActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             ArrayList<Comment> list = new ArrayList<Comment>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                comment = new Comment(document.getData().get("content").toString(), document.getData().get("idUser").toString(), document.getData().get("link").toString());
+                                comment = new Comment(document.getData().get("content").toString(), document.getData().get("idUser").toString(), document.getData().get("link").toString(), document.getId());
                                 list.add(comment);
+                                Log.w(TAG, comment.getId()+"", task.getException());
                             }
                             UpdateLV(list);
                         } else {
@@ -151,6 +158,20 @@ public class CommentActivity extends AppCompatActivity {
             displayName(com.getIdUser(), name);
             TextView content = viewString.findViewById(R.id.content);
             content.setText(com.getContent());
+            View delete = viewString.findViewById(R.id.delete);
+            if(com.getIdUser().equals(idUser)){
+                delete.setVisibility(View.VISIBLE);
+                delete.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        database.deleteComment(com.getId());
+                        UpdateLV();
+                    }
+                });
+            }else{
+                delete.setVisibility(View.GONE);
+            }
+
             return viewString;
         }
     }

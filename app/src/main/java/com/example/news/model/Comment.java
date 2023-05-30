@@ -11,6 +11,12 @@ public class Comment {
         this.idUser = idUser;
         this.link = link;
     }
+    public Comment(String content, String idUser, String link, String id) {
+        this.content = content;
+        this.idUser = idUser;
+        this.link = link;
+        this.id = id;
+    }
 
     public Comment() {
     }
