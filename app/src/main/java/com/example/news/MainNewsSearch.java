@@ -251,6 +251,7 @@ public class MainNewsSearch extends AppCompatActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
                     ArrayList<User> list = new ArrayList<User>();
+                    new downloadXML(MainNewsSearch.this,lv).execute("https://vtv.vn/trong-nuoc.rss");
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         new downloadXML(MainNewsSearch.this,lv).execute(document.get("link").toString());
                     }
