@@ -154,10 +154,13 @@ public class UpdateInfoActivity extends AppCompatActivity {
                 if (documentSnapshot.exists()) {
                     if (documentSnapshot.getString("password").equals(pass3.getText().toString())) {
                         databse.updatePassUser(pass1.getText().toString(), idUser);
-                        pass1.setText("");
-                        pass2.setText("");
-                        pass3.setText("");
-                        nofi.setText("Đổi thành công");
+                        SQLiteDatabase db = openOrCreateDatabase("statelogin", MODE_PRIVATE, null);
+                        db.delete("login", null, null);
+                        db.close();
+                        Intent intent = new Intent(UpdateInfoActivity.this, Login.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
                     } else {
                         nofi.setText("Sai mật khẩu");
                     }
