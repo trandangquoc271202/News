@@ -146,6 +146,7 @@ public class HomeActivity extends AppCompatActivity {
     public void openLink(int i){
         Intent intent = new Intent(HomeActivity.this, DetailActivity.class);
         intent.putExtra("linknews", ItemLists.get(i).getLink());
+        intent.putExtra("idUser", idUser);
         startActivity(intent);
     }
 

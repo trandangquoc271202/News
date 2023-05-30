@@ -114,6 +114,7 @@ public class NewsActivity extends AppCompatActivity {
     public void openLink(int i) {
         Intent intent = new Intent(NewsActivity.this, DetailActivity.class);
         intent.putExtra("linknews", ItemLists.get(i).getLink());
+        intent.putExtra("idUser", idUser);
         startActivity(intent);
     }
 
