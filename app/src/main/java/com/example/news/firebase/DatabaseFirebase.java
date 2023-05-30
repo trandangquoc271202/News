@@ -245,4 +245,11 @@ public class DatabaseFirebase {
             }
         });
     }
+    public void addComment(String idUser, String link, String content){
+        Map<String, Object> rss = new HashMap<>();
+        rss.put("idUser", idUser);
+        rss.put("link", link);
+        rss.put("content", content);
+        db.collection("comments").add(rss);
+    }
 }

@@ -33,8 +33,8 @@ public class DetailActivity extends AppCompatActivity {
     TextView title;
     ArrayList<DetailNew> list;
     ListView lv_news;
-    View back, detail;
-    String link;
+    View back, detail, comment;
+    String link, idUser;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +43,7 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         link = intent.getStringExtra("linknews");
-
+        idUser = intent.getStringExtra("idUser");
 
         back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +52,20 @@ public class DetailActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        comment = findViewById(R.id.comment);
+        comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailActivity.this, CommentActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("linknews", link);
+                bundle.putString("idUser", idUser);
+                intent.putExtra("data", bundle);
+                startActivity(intent);
+            }
+        });
+
         detail = findViewById(R.id.detail);
         detail.setOnClickListener(new View.OnClickListener() {
             @Override
