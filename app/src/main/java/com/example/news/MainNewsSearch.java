@@ -1,5 +1,8 @@
 package com.example.news;
 
+import static android.content.ContentValues.TAG;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,11 +23,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.news.adapter.ManageRssAdapter;
+import com.example.news.adapter.ManageUserAdapter;
+import com.example.news.adapter.NewsAdapter;
 import com.example.news.adapter.News_Adapter;
 import com.example.news.model.Item;
 import com.example.news.firebase.DatabaseFirebase;
 import com.example.news.model.News;
+import com.example.news.model.User;
 import com.example.news.xmlpullparser.XmlPullParserHandler;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,6 +60,9 @@ public class MainNewsSearch extends AppCompatActivity {
     View search;
     EditText text_search;
     ImageView home;
+    ArrayList<String> list_rss;
+
+    ArrayList<String> result = new ArrayList<String>();
     @SuppressLint("MissingInflatedId")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -54,6 +70,8 @@ public class MainNewsSearch extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_search);
 
+        list_rss = new ArrayList<String>();
+        list_rss.add("https://vtv.vn/trong-nuoc.rss");
         search = findViewById(R.id.search);
         text_search = findViewById(R.id.text_search);
 
@@ -84,7 +102,7 @@ public class MainNewsSearch extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        downloadNew();
+        getListRss();
         db = new DatabaseFirebase();
         lv = findViewById(R.id.lv_news);
 
@@ -163,11 +181,6 @@ public class MainNewsSearch extends AppCompatActivity {
         intent.putExtra("linknews", ItemLists.get(i).getLink());
         startActivity(intent);
     }
-
-    public void downloadNew(){
-        new downloadXML(MainNewsSearch.this, lv).execute("https://vtv.vn/trong-nuoc.rss");
-    }
-
     public class downloadXML extends AsyncTask<String, Void, List<Item>> {
 
         News_Adapter adapter;
@@ -191,6 +204,7 @@ public class MainNewsSearch extends AppCompatActivity {
         protected void onPostExecute(List<Item> list) {
             super.onPostExecute(list);
             List<Item> list_news = new ArrayList<Item>();
+            list_news.addAll(geListView());
             for(Item i:list){
                 if(i.getTitle().toLowerCase().contains(text.toLowerCase())){
                     list_news.add(i);
@@ -199,8 +213,6 @@ public class MainNewsSearch extends AppCompatActivity {
             adapter = new News_Adapter(context, (ArrayList<Item>) list_news);
             if (list_news != null){
                 listView.setAdapter(adapter);
-            }else if( list_news.isEmpty()){
-                Toast.makeText(MainNewsSearch.this, "Không có tin tức liên quan nào", Toast.LENGTH_SHORT).show();
             }
         }
         private InputStream downloadURL(String url)throws IOException {
@@ -231,5 +243,30 @@ public class MainNewsSearch extends AppCompatActivity {
             Log.i("00000", String.valueOf(ItemLists.size()));
             return ItemLists;
         }
+    }
+    public void getListRss(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("rss").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    ArrayList<User> list = new ArrayList<User>();
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        new downloadXML(MainNewsSearch.this,lv).execute(document.get("link").toString());
+                    }
+                }
+            }
+        });
+    }
+    public ArrayList<Item> geListView(){
+        ArrayList<Item> list_news = new ArrayList<Item>();
+        if (lv.getAdapter() == null) {
+
+        }else{
+            for(int i=0;i<lv.getAdapter().getCount();i++){
+                list_news.add((Item)lv.getAdapter().getItem(i));
+            }
+        }
+        return list_news;
     }
 }
