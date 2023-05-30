@@ -34,8 +34,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class HomeActivity extends AppCompatActivity {
+public class MainNewsSearch extends AppCompatActivity {
     String idUser;
+    String text;
     View user;
     TextView tv_category;
 
@@ -45,25 +46,27 @@ public class HomeActivity extends AppCompatActivity {
     Dialog dialog;
     View search;
     EditText text_search;
+    ImageView home;
     @SuppressLint("MissingInflatedId")
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_news_search);
 
         search = findViewById(R.id.search);
         text_search = findViewById(R.id.text_search);
 
         Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("data");
+        Bundle bundle = intent.getBundleExtra("search");
         idUser = bundle.getString("idUser");
+        text = bundle.getString("text");
 
         user = findViewById(R.id.user);
         user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                Intent intent = new Intent(MainNewsSearch.this, ProfileActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("idUser", idUser);
                 intent.putExtra("data" ,bundle);
@@ -74,7 +77,7 @@ public class HomeActivity extends AppCompatActivity {
         tv_category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+                Intent intent = new Intent(MainNewsSearch.this, MainActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("idUser", idUser);
                 intent.putExtra("data" ,bundle);
@@ -110,7 +113,7 @@ public class HomeActivity extends AppCompatActivity {
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(HomeActivity.this,MainNewsSearch.class);
+                Intent myIntent = new Intent(MainNewsSearch.this,MainNewsSearch.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("text",text_search.getText().toString());
                 bundle.putString("idUser",idUser);
@@ -118,9 +121,21 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
+
+        home = findViewById(R.id.imageView3);
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainNewsSearch.this, HomeActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("idUser", idUser);
+                intent.putExtra("data", bundle);
+                startActivity(intent);
+            }
+        });
     }
     public void openDialogFavorite(Item item){
-        dialog = new Dialog(HomeActivity.this);
+        dialog = new Dialog(MainNewsSearch.this);
         dialog.setContentView(R.layout.dialog_add_favorite);
         Button button = dialog.findViewById(R.id.btn_add_favorite);
         button.setOnClickListener(new View.OnClickListener() {
@@ -144,14 +159,13 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void openLink(int i){
-        Intent intent = new Intent(HomeActivity.this, DetailActivity.class);
+        Intent intent = new Intent(MainNewsSearch.this, DetailActivity.class);
         intent.putExtra("linknews", ItemLists.get(i).getLink());
-        intent.putExtra("idUser", idUser);
         startActivity(intent);
     }
 
     public void downloadNew(){
-        new HomeActivity.downloadXML(HomeActivity.this, lv).execute("https://vtv.vn/trong-nuoc.rss");
+        new downloadXML(MainNewsSearch.this, lv).execute("https://vtv.vn/trong-nuoc.rss");
     }
 
     public class downloadXML extends AsyncTask<String, Void, List<Item>> {
@@ -176,9 +190,17 @@ public class HomeActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Item> list) {
             super.onPostExecute(list);
-            adapter = new News_Adapter(context, (ArrayList<Item>) list);
-            if (list != null){
+            List<Item> list_news = new ArrayList<Item>();
+            for(Item i:list){
+                if(i.getTitle().toLowerCase().contains(text.toLowerCase())){
+                    list_news.add(i);
+                }
+            }
+            adapter = new News_Adapter(context, (ArrayList<Item>) list_news);
+            if (list_news != null){
                 listView.setAdapter(adapter);
+            }else if( list_news.isEmpty()){
+                Toast.makeText(MainNewsSearch.this, "Không có tin tức liên quan nào", Toast.LENGTH_SHORT).show();
             }
         }
         private InputStream downloadURL(String url)throws IOException {

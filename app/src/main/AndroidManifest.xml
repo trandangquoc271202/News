@@ -23,6 +23,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity
+            android:name=".MainNewsSearch"
+            android:exported="true" />
+        <activity
             android:name=".CommentActivity"
             android:exported="false" />
         <activity
