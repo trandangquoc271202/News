@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainNewsSearch">
     <TextView
         android:id="@+id/background"
         android:layout_width="match_parent"
@@ -61,15 +61,17 @@
             android:gravity="center"
             android:text="Danh mục" />
     </LinearLayout>
+
     <ListView
-        android:id="@+id/lv_main"
+        android:id="@+id/lv_news"
         android:layout_width="360dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="128dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="50dp"

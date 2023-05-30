@@ -12,6 +12,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,11 +39,28 @@ public class MainActivity extends AppCompatActivity {
     TextView tv_home;
     View user;
     String idUser;
+    View search;
+    EditText text_search;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lv_main = findViewById(R.id.lv_main);
+
+        search = findViewById(R.id.search);
+        text_search = findViewById(R.id.text_search);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent myIntent = new Intent(MainActivity.this,MainNewsSearch.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("text",text_search.getText().toString());
+                bundle.putString("idUser",idUser);
+                myIntent.putExtra("search",bundle);
+                startActivity(myIntent);
+            }
+        });
 
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("data");
