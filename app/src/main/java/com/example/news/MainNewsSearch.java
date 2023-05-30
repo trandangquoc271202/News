@@ -192,7 +192,7 @@ public class MainNewsSearch extends AppCompatActivity {
             super.onPostExecute(list);
             List<Item> list_news = new ArrayList<Item>();
             for(Item i:list){
-                if(i.getTitle().contains(text.toLowerCase())){
+                if(i.getTitle().toLowerCase().contains(text.toLowerCase())){
                     list_news.add(i);
                 }
             }

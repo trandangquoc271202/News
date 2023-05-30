@@ -24,7 +24,7 @@
         android:theme="@style/Theme.Design.Light.NoActionBar">
         <activity
             android:name=".MainNewsSearch"
-            android:exported="false" />
+            android:exported="true" />
         <activity
             android:name=".DetailActivity"
             android:exported="true"></activity>
