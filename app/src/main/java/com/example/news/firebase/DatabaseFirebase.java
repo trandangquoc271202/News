@@ -163,6 +163,16 @@ public class DatabaseFirebase {
         save.put("typeAccount", "0");
         db.collection("users").add(save);
     }
+    public void saveAccountGG(String username, String password, String email) {
+        Map<String, Object> save = new HashMap<>();
+        save.put("username", username);
+        save.put("password", password);
+        save.put("email", email);
+        save.put("name", "");
+        save.put("role", "user");
+        save.put("typeAccount", "1");
+        db.collection("users").add(save);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public CompletableFuture<Boolean> checkExistFavorite(Item item, String idUser) {
