@@ -111,7 +111,9 @@ public class MainNewsSearch extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ItemLists = geListView();
                 CompletableFuture<Boolean> isExistfuture = db.checkExistHistory(idUser,ItemLists.get(i));
+
                 isExistfuture.thenAccept(isExist -> {
                     if (isExist) {
                     } else {
@@ -179,6 +181,7 @@ public class MainNewsSearch extends AppCompatActivity {
     public void openLink(int i){
         Intent intent = new Intent(MainNewsSearch.this, DetailActivity.class);
         intent.putExtra("linknews", ItemLists.get(i).getLink());
+        intent.putExtra("idUser", idUser);
         startActivity(intent);
     }
     public class downloadXML extends AsyncTask<String, Void, List<Item>> {
