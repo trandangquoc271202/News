@@ -104,7 +104,7 @@ public class RegisterAccount extends AppCompatActivity {
                             }
                             if (result) {
                                 Display.setText("Tên đăng nhập hoặc email đã tồn tại!");
-                            }else{
+                            } else {
                                 if (!result) {
                                     database.saveAccount(username, pass, email);
                                     Intent intent = new Intent(RegisterAccount.this, Login.class);

@@ -69,13 +69,7 @@
             android:text="Đăng kí"
             tools:ignore="MissingConstraints" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:gravity="center"
-            android:text="Hoặc đăng nhập với:" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
